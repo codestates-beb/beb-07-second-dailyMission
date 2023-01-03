@@ -18,16 +18,16 @@ model User {
 }
 
 model Mission {
-  id           Int      @id @default(autoincrement())
+  id           Int     @id @default(autoincrement())
   userId       String
   title        String
   reward       Int
   recruitCount Int
   content      String
-  createdAt    DateTime
-  updatedAt    DateTime
+  createdAt    String
+  updatedAt    String  @default("0000000000")
   endDate      String
-  isComplete   Boolean  @default(false)
+  isComplete   Boolean @default(false)
 }
 
 model Comment {
