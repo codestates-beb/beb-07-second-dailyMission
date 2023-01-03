@@ -15,14 +15,15 @@ module.exports = {
     }
   },
   missionDetail: async (req, res) => {
-    console.log(req.query);
     try {
       const { missionid } = req.query;
       const missionDetailRes = await prisma.mission.findUnique({
         where: { id: parseInt(missionid) },
       });
-
-      res.send({ status: "success", message: missionDetailRes });
+      if (missionDetailRes)
+        res.send({ status: "success", message: missionDetailRes });
+      else
+        res.send({ status: "failed", message: "Failed to find the mission" });
     } catch (e) {
       console.log(e);
       res.send({ status: "failed", message: "Failed to call the mission" });
