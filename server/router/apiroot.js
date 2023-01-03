@@ -1,12 +1,14 @@
 const express = require("express");
 const router = express.Router();
-
+const { signUp } = require("../controller/signup");
 const {
   missionDetail,
   newMission,
   missions,
 } = require("./../controller/missionController");
 const { newComment } = require("./../controller/commentController");
+
+
 
 router.get("/", (req, res) => {
   res.send("This is api router");
@@ -25,5 +27,8 @@ router.get("/", (req, res) => {
 router.post("/selcomment", (req, res) => {
   selComment(req, res);
 });
+
+router.post('/signup', signUp);
+
 
 module.exports = router;
