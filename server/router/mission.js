@@ -4,9 +4,9 @@ const {
   missionDetail,
   newMission,
   missions,
-} = require("./../controller/mintController");
+} = require("./../controller/missionController");
 
-router.get("/", missions);
+router.get("/missions", missions);
 router.get("/detail", missionDetail);
 router.post("/newmission", newMission);
 
