@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const selComment = require('../function/selcomment');
+const selComment = require('../controller/selcomment');
 
 router.get('/', (req, res) => {
   res.send('This is api router');
