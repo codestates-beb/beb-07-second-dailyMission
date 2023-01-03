@@ -1,4 +1,5 @@
 const prisma = require("../prisma/prisma");
+const { timeFormatted } = require("../utils/utils");
 
 module.exports = {
   missions: async (req, res) => {
@@ -31,7 +32,6 @@ module.exports = {
   },
   newMission: async (req, res) => {
     try {
-      console.log(req.body);
       const { userId, title, reward, recruitCount, content, endDate } =
         req.body;
 
@@ -47,8 +47,8 @@ module.exports = {
         reward: parseInt(reward),
         recruitCount: parseInt(recruitCount),
         content: content,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: timeFormatted(),
+        updatedAt: timeFormatted(),
         endDate: endDate,
         isComplete: false,
       };
