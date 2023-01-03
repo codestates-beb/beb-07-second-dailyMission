@@ -1,0 +1,40 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  userId   String @id
+  password String
+  userName String
+  address  String
+}
+
+model Mission {
+  id           Int      @id @default(autoincrement())
+  userId       String
+  title        String
+  reword       Int
+  recruitCount Int
+  content      String
+  createdAt    DateTime
+  updatedAt    DateTime
+  endDate      String
+  isComplete   Boolean  @default(false)
+}
+
+model Comment {
+  id         Int     @id @default(autoincrement())
+  missionId  Int
+  userId     String
+  content    String
+  ipfsHash   String?
+  isSelected Boolean @default(false)
+}
