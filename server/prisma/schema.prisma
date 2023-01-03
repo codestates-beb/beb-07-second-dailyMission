@@ -21,7 +21,7 @@ model Mission {
   id           Int      @id @default(autoincrement())
   userId       String
   title        String
-  reword       Int
+  reward       Int
   recruitCount Int
   content      String
   createdAt    DateTime
