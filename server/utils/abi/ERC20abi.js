@@ -1,4 +1,4 @@
-let abi = [
+const ERC20abi = [
   {
     anonymous: false,
     inputs: [
@@ -221,4 +221,4 @@ let abi = [
   },
 ];
 
-module.exports = abi;
+module.exports = ERC20abi;
