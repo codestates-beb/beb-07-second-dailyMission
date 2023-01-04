@@ -10,8 +10,9 @@ const { newComment } = require('./../controller/commentController');
 const selComment = require('../controller/selcomment');
 const { checkWallet } = require('../controller/checkWalletExist');
 
-router.get('/', (req, res) => {
-  res.send('This is api router');
+
+router.get("/", (req, res) => {
+  res.send("This is api router");
 });
 
 router.get('/missions', missions);
@@ -22,6 +23,7 @@ router.get('/newcomment', newComment);
 router.post('/selcomment', selComment);
 router.get('/address/:address', checkWallet);
 
-router.post('/signup', signUp);
+router.post("/signup", signUp);
+
 
 module.exports = router;
