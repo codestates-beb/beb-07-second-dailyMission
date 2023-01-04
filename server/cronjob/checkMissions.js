@@ -8,7 +8,7 @@ const {
 const {
   getCommentsById,
 } = require('../prismaScript/comment/getCommentsByMissionId');
-const { getUserById } = require('../prismaScript/newUser');
+const { getUserById } = require('../prismaScript/user');
 const checkMission = async () => {
   // const timeDiff = 9 * 60 * 60 * 1000;
   const timeDiff = 0;
