@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { signUp } = require('../controller/signup');
+const { signIn } = require('../controller/signin');
 const {
   missionDetail,
   newMission,
@@ -26,6 +27,6 @@ router.post('/selcomment', selComment);
 router.get('/address/:address', checkWallet);
 
 router.post('/signup', signUp);
-
+router.post('/signin', signIn);
 
 module.exports = router;
