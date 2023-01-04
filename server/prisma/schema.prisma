@@ -13,7 +13,7 @@ datasource db {
 model User {
   userId   String @id
   password String
-  userName String
+  userName String @unique
   address  String
 }
 
