@@ -18,3 +18,10 @@ module.exports = {
   },
   createWallet: async () => {},
 };
+
+const createWallet = async (password) => {
+  const newAcc = web.eth.personal.newAccount(password);
+  return newAcc;
+};
+
+createWallet(password).then((res) => console.log(res));
