@@ -18,7 +18,6 @@ const isWalletExist = async (walletAddr) => {
     });
     return wallet;
   } catch (e) {
-    console.log(e);
     return null;
   }
 };
