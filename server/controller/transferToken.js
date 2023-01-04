@@ -22,7 +22,7 @@ const transferToken = async (req, res) => {
     body.receiverAddr,
     amount
   );
-  if (!transferRes)
+  if (!transferRes.status)
     return res
       .status(200)
       .send({ status: 'fail', message: transferRes.message });
