@@ -33,8 +33,11 @@ const checkMission = async () => {
   });
 
   const uncompletedMissions = await getUncompletedMissions();
+  if (!uncompletedMissions) return;
+
   const missions = uncompletedMissions.filter((e) => e.endDate === nowString);
   if (missions.length === 0) return;
+
   for (let mission of missions) {
     const missionData = await getMission(mission.id);
     const comments = await getCommentsById(mission.id);

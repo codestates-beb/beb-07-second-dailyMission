@@ -11,4 +11,4 @@ const contract = new web3.eth.Contract(
   process.env.CONTRACT_ADDRESS
 );
 
-module.exports = contract;
+module.exports = { contract, web3 };
