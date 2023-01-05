@@ -1,5 +1,14 @@
+require('dotenv').config();
 const { isWalletExist } = require('../prismaScript/user');
 const { sendTokenGanache } = require('../utils/transaction');
+const { getWeb3 } = require('../truffle/web3');
+const abi = require('../truffle/abi/ICTokenABI');
+
+const network = process.env.LOCAL_RPC_SERVER_NETWORK;
+const port = process.env.LOCAL_RPC_SERVER_PORT;
+const contractAddress = process.env.CONTRACT_ADDRESS;
+const web3 = getWeb3(network, port);
+const contract = new web3.eth.Contract(abi, contractAddress);
 
 const transferToken = async (req, res) => {
   const body = req.body;
@@ -20,7 +29,7 @@ const transferToken = async (req, res) => {
   const transferRes = await sendTokenGanache(
     body.senderAddr,
     body.receiverAddr,
-    amount
+    body.amount
   );
   if (!transferRes.status)
     return res
