@@ -1,110 +1,114 @@
+
 const Web3 = require("web3");
 const ERC20abi = require("./abi/ERC20abi");
+const { ethBalance, tokenBalance } = require("./wallet");
+const { getPasswordByAddr } = require("./utils");
+require("dotenv").config({ path: "../.env" });
 
+const { ERC20_ADDRESS, ADMIN_ADDRESS, ADMIN_PRIVATEKEY } = process.env;
 const web = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:7545"));
-const erc20Address = "0xb711fcEaec7377D84eb8A6107B9190d417426596";
 
-const adminAddr = "0x74BBFDC4D1f6f18D94E1a32AE88FedBdA30Ca8e7";
-const privateKey =
-  "68ababc729468392d4697546b4f4d87afb283c1110ec80b632b3dac6b2678d66";
-const user1Addr = "0x7eA2f58FEB7C8BA8A1ed46520955a8233BFBE9D3";
-const user2Addr = "0xA6dc4fae0553Bd19F8688e701b47a51ED2beA031";
+const tokenContract = new web.eth.Contract(ERC20abi, ERC20_ADDRESS);
 
-const tokenContract = new web.eth.Contract(ERC20abi, erc20Address);
+const isEthEnough = async (from, gas) => {
+  const eth = await ethBalance(from);
+  if (gas < eth) return true;
+  return false;
+};
 
-const signTx = async (tx, privateKey) => {
+const isTokenEnough = async (from, amount) => {
+  const token = await tokenBalance(from);
+  if (amount < token) return true;
+  return false;
+};
+
+const sendTokenGanache = async (from, to, amount) => {
   try {
-    const txSigned = await web.eth.accounts.signTransaction(tx, privateKey);
-    // console.log("signed", txSigned);
-    const hash = web.eth.sendSignedTransaction(
-      txSigned.rawTransaction,
-      (err, hash) => {
-        if (err) console.log("Transaction Error:", err);
-      }
-    );
-    return hash;
-  } catch (err) {
-    console.log("Promise Error:", err);
-    return false;
+    if (!isTokenEnough) {
+
+      return { status: false, message: "Not enough token to send" };
+
+    }
+    const data = await tokenContract.methods.transfer(to, amount);
+    const gas = await data.estimateGas();
+    if (!isEthEnough(from, gas)) {
+
+      return { status: false, message: "Not enough ethereum to pay gas" };
+
+    }
+    const result = await data.send({ from: from });
+    return {
+      status: result.status,
+      message:
+        from === ADMIN_ADDRESS
+          ? 'Rewarded successfully'
+          : 'Sended successfully',
+    };
+  } catch (e) {
+    console.log(e);
+    return { status: false, message: e };
   }
 };
 
 module.exports = {
-  sendGanache: async (address) => {
-    try {
-      const data = await tokenContract.methods
-        .transfer(user1Addr, 10000)
-        .send({ from: adminAddr });
-      return data.status;
-    } catch (e) {
-      console.log(e);
-      return e;
-    }
+  rewardTokenGanache: async (to, amount) =>
+    await sendTokenGanache(ADMIN_ADDRESS, to, amount),
+  sendTokenGanache: async (from, to, amount) => {
+    const password = await getPasswordByAddr(from);
+
+    if (!password) return { status: false, message: "Address Not Found." };
+
+    const unlock = await web.eth.personal.unlockAccount(from, password, 3);
+    if (unlock) {
+      const giveRes = await sendTokenGanache(from, to, amount);
+      await web.eth.personal.lockAccount(from);
+
+      return giveRes;
+    } else return { status: false, message: "Failed to unlock address" };
+
   },
-  sendGoerli: async (address) => {
-    try {
-      const data = await tokenContract.methods
-        .transfer(user1Addr, 10000)
-        .encodeABI();
-      const tx = {
-        to: erc20Address,
-        gas: 500000,
-        data: data,
-      };
-      const txHash = await signTx(tx, privateKey, web);
-      return txHash.status;
-    } catch (e) {
-      console.log(e);
-      return false;
-    }
-  },
+  // rewardTokenGoerli: async (to, amount) =>
+  //   await sendTokenGoerli(ADMIN_ADDRESS, to, amount),
+  // sendTokenGoerli: async (from, to, amount) =>
+  //   await sendTokenGoerli(from, to, amount),
 };
 
-// (async () => {
-//   const data = await tokenContract.methods
-//     .transfer(user1Addr, 10000)
-//     .encodeABI();
-//   const tx = {
-//     to: erc20Address,
-//     gas: 500000,
-//     data: data,
-//   };
-//   const txHash = await signTx(tx, privateKey, web);
-//   console.log(txHash.status);
+// Goerli Testnet
+const sendTokenGoerli = async (from, to, amount) => {
+  try {
+    const data = await tokenContract.methods.transfer(to, amount).encodeABI();
+    const tx = {
+      to: ERC20_ADDRESS,
+      gas: 500000,
+      data: data,
+    };
+    const txHash = await signTx(tx);
+    return txHash.status;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+};
 
-// const data = await tokenContract.methods
-//   .transfer(user1Addr, 10000)
-//   .send({ from: adminAddr });
-// console.log(data.status);
-// const bal = await tokenContract.methods.balanceOf(user1Addr).call();
-// console.log(bal);
-// })();
+const signTx = async (tx) => {
+  try {
+    const txSigned = await web.eth.accounts.signTransaction(
+      tx,
+      ADMIN_PRIVATEKEY
+    );
+    const hash = web.eth.sendSignedTransaction(
+      txSigned.rawTransaction,
+      (err, hash) => {
 
-// const newMission = async (req, res) => {
-//   try {
-//     const { userId, title, reward, recruitCount, content, endDate } = req.body;
+        if (err) console.log("Transaction Error:", err);
 
-//     const address = await prisma.user.findUnique({
-//       where: { userId: userId },
-//     });
-//     // 잔고 체크 + address와 비밀번호를 가지고 total = reward + 35 token 송금.
-//     // contract.methods.balanceOf(address) 과 total 비교
+      }
+    );
+    return hash;
+  } catch (err) {
 
-//     data = {
-//       userId,
-//       title,
-//       reward,
-//       recruitCount,
-//       content,
-//       createdAt: new Date(),
-//       updatedAt: new Date(),
-//       endDate,
-//       isComplete: false,
-//     };
-//     const newMissionRes = await prisma.mission.create({ data: data });
-//     return newMissionRes;
-//   } catch (e) {
-//     console.log(e);
-//     return false;
-//   }
-// };
+    console.log("Promise Error:", err);
+
+    return false;
+  }
+};

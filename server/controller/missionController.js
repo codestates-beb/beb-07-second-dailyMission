@@ -9,31 +9,59 @@ module.exports = {
           isComplete: false,
         },
       });
-      res.send({ status: "success", message: missionsNotCompleted });
+      return res
+        .status(200)
+        .send({ status: "success", message: missionsNotCompleted });
     } catch (e) {
       console.log(e);
-      res.send({ status: "failed", message: "Failed to call missions" });
+      return res
+        .status(400)
+        .send({ status: "failed", message: "Failed to call missions" });
     }
   },
   missionDetail: async (req, res) => {
     try {
       const { missionid } = req.query;
+      if (!missionid || parseInt(missionid)) {
+        return res
+          .send(400)
+          .send({ status: "failed", message: "Invalid missionid" });
+      }
       const missionDetailRes = await prisma.mission.findUnique({
         where: { id: parseInt(missionid) },
       });
       if (missionDetailRes)
-        res.send({ status: "success", message: missionDetailRes });
+        return res
+          .status(200)
+          .send({ status: "success", message: missionDetailRes });
       else
-        res.send({ status: "failed", message: "Failed to find the mission" });
+        return res
+          .status(200)
+          .send({ status: "failed", message: "Failed to find the mission" });
     } catch (e) {
       console.log(e);
-      res.send({ status: "failed", message: "Failed to call the mission" });
+      return res.status(400).send({ status: "failed", message: e });
     }
   },
   newMission: async (req, res) => {
     try {
       const { userId, title, reward, recruitCount, content, endDate } =
         req.body;
+
+      if (
+        !userId ||
+        !title ||
+        !reward ||
+        !recruitCount ||
+        !content ||
+        !endDate
+      ) {
+        return res.status(400).send({
+          status: "failed",
+          message:
+            "Check body data. Body data needs userId, title, reward, recruitCount, content, endDate",
+        });
+      }
 
       // 잔고 체크 + address와 비밀번호를 가지고 total = reward + 35 token 송금.
       // contract.methods.balanceOf(address) 과 total 비교
@@ -53,10 +81,12 @@ module.exports = {
         isComplete: false,
       };
       const newMissionRes = await prisma.mission.create({ data: data });
-      res.send({ status: "success", message: newMissionRes });
+      return res
+        .status(200)
+        .send({ status: "success", message: newMissionRes });
     } catch (e) {
       console.log(e);
-      res.send({ status: "failed", message: "Failed to add the mission" });
+      return res.status(400).send({ status: "failed", message: e });
     }
   },
 };
