@@ -53,7 +53,36 @@ module.exports = {
         .send({ status: "failed", message: "Failed in getting faucet" });
     }
   },
-  getLastEthFaucet: async (req, res) => {},
+  getLastEthFaucet: async (req, res) => {
+    try {
+      const { userid } = req.query;
+      if (!userid) {
+        return res.status(400).send({
+          status: "failed",
+          message: "Need userId",
+        });
+      }
+      const userData = await prisma.user.findUnique({
+        where: { userId: userid },
+      });
+      if (!userData) {
+        return res
+          .status(200)
+          .send({ status: "failed", message: "UserId not found." });
+      }
+      const { lastFaucet } = userData;
+      if (!lastFaucet)
+        return res
+          .status(200)
+          .send({ status: "success", message: "No faucet history" });
+      return res
+        .status(200)
+        .send({ status: "success", message: { lastFaucet: lastFaucet } });
+    } catch (e) {
+      console.log(e);
+      return res.status(400).send({ status: "failed", message: e });
+    }
+  },
   getTokenFaucet: async (req, res) => {
     // type이 token일시
     // 컨트랙트의 dailyRewardTimestamp 체크

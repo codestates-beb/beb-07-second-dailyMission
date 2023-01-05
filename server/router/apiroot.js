@@ -34,5 +34,6 @@ router.post("/signup", signUp);
 router.post("/signin", signIn);
 
 router.get("/getethfaucet", getEthFaucet);
+router.get("/lastethfaucet", getLastEthFaucet);
 
 module.exports = router;
