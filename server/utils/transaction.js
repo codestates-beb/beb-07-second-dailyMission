@@ -1,14 +1,19 @@
-
-const Web3 = require("web3");
 const ERC20abi = require("./abi/ERC20abi");
 const { ethBalance, tokenBalance } = require("./wallet");
 const { getPasswordByAddr } = require("./utils");
+const { getWeb3, getContract } = require("./web3");
 require("dotenv").config({ path: "../.env" });
 
-const { ERC20_ADDRESS, ADMIN_ADDRESS, ADMIN_PRIVATEKEY } = process.env;
-const web = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:7545"));
+const {
+  LOCAL_RPC_SERVER_NETWORK,
+  LOCAL_RPC_SERVER_PORT,
+  CONTRACT_ADDRESS,
+  SERVER_ADDRESS,
+  SERVER_PRIVATE_KEY,
+} = process.env;
 
-const tokenContract = new web.eth.Contract(ERC20abi, ERC20_ADDRESS);
+const web = getWeb3(LOCAL_RPC_SERVER_NETWORK, LOCAL_RPC_SERVER_PORT);
+const tokenContract = getContract(web, ERC20abi, CONTRACT_ADDRESS);
 
 const isEthEnough = async (from, gas) => {
   const eth = await ethBalance(from);
@@ -25,24 +30,20 @@ const isTokenEnough = async (from, amount) => {
 const sendTokenGanache = async (from, to, amount) => {
   try {
     if (!isTokenEnough) {
-
       return { status: false, message: "Not enough token to send" };
-
     }
     const data = await tokenContract.methods.transfer(to, amount);
     const gas = await data.estimateGas();
     if (!isEthEnough(from, gas)) {
-
       return { status: false, message: "Not enough ethereum to pay gas" };
-
     }
     const result = await data.send({ from: from });
     return {
       status: result.status,
       message:
-        from === ADMIN_ADDRESS
-          ? 'Rewarded successfully'
-          : 'Sended successfully',
+        from === SERVER_ADDRESS
+          ? "Rewarded successfully"
+          : "Sended successfully",
     };
   } catch (e) {
     console.log(e);
@@ -52,7 +53,7 @@ const sendTokenGanache = async (from, to, amount) => {
 
 module.exports = {
   rewardTokenGanache: async (to, amount) =>
-    await sendTokenGanache(ADMIN_ADDRESS, to, amount),
+    await sendTokenGanache(SERVER_ADDRESS, to, amount),
   sendTokenGanache: async (from, to, amount) => {
     const password = await getPasswordByAddr(from);
 
@@ -65,12 +66,33 @@ module.exports = {
 
       return giveRes;
     } else return { status: false, message: "Failed to unlock address" };
-
   },
   // rewardTokenGoerli: async (to, amount) =>
   //   await sendTokenGoerli(ADMIN_ADDRESS, to, amount),
   // sendTokenGoerli: async (from, to, amount) =>
   //   await sendTokenGoerli(from, to, amount),
+  sendEthereum: async (address, amount) => {
+    const wei = await web.utils.toWei(String(amount), "ether");
+    if (!(await isEthEnough(SERVER_ADDRESS, wei))) {
+      return {
+        status: "failed",
+        message: "Not enought ethereum in server address",
+      };
+    }
+    const nonce = await web.eth.getTransactionCount(SERVER_ADDRESS, "latest");
+    const tx = {
+      to: address,
+      value: wei,
+      gas: 30000,
+      nonce: nonce,
+    };
+    const hash = await signTx(tx);
+    if (hash) {
+      return { status: "success", message: "Sended ethereum successfully" };
+    } else {
+      return { status: "failed", message: "Transaction failed" };
+    }
+  },
 };
 
 // Goerli Testnet
@@ -94,19 +116,16 @@ const signTx = async (tx) => {
   try {
     const txSigned = await web.eth.accounts.signTransaction(
       tx,
-      ADMIN_PRIVATEKEY
+      SERVER_PRIVATE_KEY
     );
     const hash = web.eth.sendSignedTransaction(
       txSigned.rawTransaction,
       (err, hash) => {
-
         if (err) console.log("Transaction Error:", err);
-
       }
     );
     return hash;
   } catch (err) {
-
     console.log("Promise Error:", err);
 
     return false;
