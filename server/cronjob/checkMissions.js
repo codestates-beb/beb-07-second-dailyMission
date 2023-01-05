@@ -24,10 +24,11 @@ const checkMission = async () => {
   const web3 = getWeb3(network, port);
   const contract = getContract(web3, abi, contractAddress);
 
-  // const timeDiff = 9 * 60 * 60 * 1000;
-  const timeDiff = 0;
+  const timeDiff = 9 * 60 * 60 * 1000;
+  // const timeDiff = 0;
 
-  const utc = new Date().getTime();
+  const curr = new Date();
+  const utc = curr.getTime() + curr.getTimezoneOffset() * 60 * 1000;
   const kst = new Date(utc + timeDiff);
 
   const time = [
