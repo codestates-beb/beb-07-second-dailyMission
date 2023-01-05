@@ -23,11 +23,11 @@ module.exports = {
 
         if (await isUserIdExist(userId)) {
             return res
-                .status(409)
+                .status(200)
                 .send({ status: "falied", message: "Same userId exists" });
         } else if (await isUserNameExist(userName)) {
             return res
-                .status(409)
+                .status(200)
                 .send({ status: "failed", message: "Same userName exists" });
         }
 
