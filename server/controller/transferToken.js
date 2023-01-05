@@ -1,14 +1,14 @@
 require('dotenv').config();
 const { isWalletExist } = require('../prismaScript/user');
 const { sendTokenGanache } = require('../utils/transaction');
-const { getWeb3 } = require(`../utils/web3`);
+const { getWeb3, getContract } = require(`../utils/web3`);
 const abi = require(`../utils/abi/ICTokenABI`);
 
 const network = process.env.LOCAL_RPC_SERVER_NETWORK;
 const port = process.env.LOCAL_RPC_SERVER_PORT;
 const contractAddress = process.env.CONTRACT_ADDRESS;
 const web3 = getWeb3(network, port);
-const contract = new web3.eth.Contract(abi, contractAddress);
+const contract = getContract(web3, abi, contractAddress);
 
 const transferToken = async (req, res) => {
   const body = req.body;
