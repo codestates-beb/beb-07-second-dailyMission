@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { signUp } = require('../controller/signup');
 const { signIn } = require('../controller/signin');
+const { getMyInfo } = require('../controller/getMyInfo');
 const {
   missionDetail,
   newMission,
@@ -30,5 +31,7 @@ router.use('/dev', devRouter);
 
 router.post('/signup', signUp);
 router.post('/signin', signIn);
+
+router.get('/mypage', getMyInfo)
 
 module.exports = router;
