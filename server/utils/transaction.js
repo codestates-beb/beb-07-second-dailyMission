@@ -33,8 +33,8 @@ const sendTokenGanache = async (from, to, amount) => {
       return { status: false, message: "Not enough token to send" };
     }
     const data = await tokenContract.methods.transfer(to, amount);
-    const gas = await data.estimateGas();
-    if (!isEthEnough(from, gas)) {
+    const gasInWei = web.utils.toWei(await data.estimateGas(), "gwei");
+    if (!isEthEnough(from, gasInWei)) {
       return { status: false, message: "Not enough ethereum to pay gas" };
     }
     const result = await data.send({ from: from });
@@ -48,6 +48,26 @@ const sendTokenGanache = async (from, to, amount) => {
   } catch (e) {
     console.log(e);
     return { status: false, message: e };
+  }
+};
+
+const signTx = async (tx) => {
+  try {
+    const txSigned = await web.eth.accounts.signTransaction(
+      tx,
+      SERVER_PRIVATE_KEY
+    );
+    const hash = web.eth.sendSignedTransaction(
+      txSigned.rawTransaction,
+      (err, hash) => {
+        if (err) console.log("Transaction Error:", err);
+      }
+    );
+    return hash;
+  } catch (err) {
+    console.log("Promise Error:", err);
+
+    return false;
   }
 };
 
@@ -88,7 +108,12 @@ module.exports = {
     };
     const hash = await signTx(tx);
     if (hash) {
-      return { status: "success", message: "Sended ethereum successfully" };
+      return {
+        status: "success",
+        message: {
+          amount: amount,
+        },
+      };
     } else {
       return { status: "failed", message: "Transaction failed" };
     }
@@ -108,26 +133,6 @@ const sendTokenGoerli = async (from, to, amount) => {
     return txHash.status;
   } catch (e) {
     console.log(e);
-    return false;
-  }
-};
-
-const signTx = async (tx) => {
-  try {
-    const txSigned = await web.eth.accounts.signTransaction(
-      tx,
-      SERVER_PRIVATE_KEY
-    );
-    const hash = web.eth.sendSignedTransaction(
-      txSigned.rawTransaction,
-      (err, hash) => {
-        if (err) console.log("Transaction Error:", err);
-      }
-    );
-    return hash;
-  } catch (err) {
-    console.log("Promise Error:", err);
-
     return false;
   }
 };

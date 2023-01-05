@@ -11,10 +11,10 @@ datasource db {
 }
 
 model User {
-  userId   String @id
-  password String
-  userName String @unique
-  address  String
+  userId     String @id
+  password   String
+  userName   String @unique
+  address    String
   lastFaucet String?
 }
 
