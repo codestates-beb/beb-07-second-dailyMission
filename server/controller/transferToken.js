@@ -1,8 +1,8 @@
 require('dotenv').config();
 const { isWalletExist } = require('../prismaScript/user');
 const { sendTokenGanache } = require('../utils/transaction');
-const { getWeb3 } = require('../truffle/web3');
-const abi = require('../truffle/abi/ICTokenABI');
+const { getWeb3 } = require(`../utils/web3`);
+const abi = require(`../utils/abi/ICTokenABI`);
 
 const network = process.env.LOCAL_RPC_SERVER_NETWORK;
 const port = process.env.LOCAL_RPC_SERVER_PORT;
