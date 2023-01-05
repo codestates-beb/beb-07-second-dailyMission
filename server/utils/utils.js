@@ -2,10 +2,9 @@ const { sha256 } = require("js-sha256").sha256;
 const prisma = require("../prisma/prisma");
 
 module.exports = {
-  timeFormatted: () => {
-    const now = new Date();
-    const [day, time] = now.toISOString().split("T");
-    return day.split("-").join("") + time.split(":").slice(0, 2).join("");
+  timeFormatted: (time) => {
+    const [day, hour] = time.toISOString().split("T");
+    return day.split("-").join("") + hour.split(":").slice(0, 2).join("");
   },
 
   passwordHashed: (id, password) => {

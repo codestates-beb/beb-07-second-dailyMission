@@ -79,8 +79,8 @@ module.exports = {
         reward: parseInt(reward),
         recruitCount: parseInt(recruitCount),
         content: content,
-        createdAt: timeFormatted(),
-        updatedAt: timeFormatted(),
+        createdAt: timeFormatted(new Date()),
+        updatedAt: timeFormatted(new Date()),
         endDate: endDate,
         isComplete: false,
       };
