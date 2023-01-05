@@ -28,7 +28,7 @@ const checkMission = async () => {
   // const timeDiff = 0;
 
   const curr = new Date();
-  const utc = curr.getTime() + curr.getTimezoneOffset() * 60 * 1000;
+  const utc = curr.getTime();
   const kst = new Date(utc + timeDiff);
 
   const time = [
