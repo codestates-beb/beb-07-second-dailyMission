@@ -118,6 +118,19 @@ module.exports = {
       return { status: "failed", message: "Transaction failed" };
     }
   },
+  getTokenLasfFaucet: async (address) => {
+    const lastFaucet = await tokenContract.methods
+      .getTokenFaucetTimestamp(address)
+      .call();
+    return lastFaucet; // 0 if no history
+  },
+  setTokenLasfFaucet: async (address, time) => {
+    const timestamp = parseInt(time);
+    const setTimestampRes = await tokenContract.methods
+      .setTokenFaucetTimestamp(address, timestamp)
+      .send({ from: SERVER_ADDRESS });
+    return setTimestampRes.status;
+  },
 };
 
 // Goerli Testnet

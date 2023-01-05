@@ -14,6 +14,8 @@ const tokenTransfer = require("../controller/transferToken");
 const {
   getEthFaucet,
   getLastEthFaucet,
+  getTokenFaucet,
+  getLastTokenFaucet,
 } = require("../controller/faucetController");
 
 router.get("/", (req, res) => {
@@ -35,5 +37,8 @@ router.post("/signin", signIn);
 
 router.get("/getethfaucet", getEthFaucet);
 router.get("/lastethfaucet", getLastEthFaucet);
+
+router.get("/gettokenfaucet", getTokenFaucet);
+router.get("/lasttokenfaucet", getLastTokenFaucet);
 
 module.exports = router;
