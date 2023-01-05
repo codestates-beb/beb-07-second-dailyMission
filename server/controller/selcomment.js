@@ -22,7 +22,7 @@ const selComment = async (req, res) => {
   const setSelectedRes = await setSelected(commentId);
   if (!setSelectedRes)
     return res
-      .status(409)
+      .status(200)
       .send({ status: 'Failed', message: 'SetSelected Failed' });
 
   const comments = await getCommentsById(missionId);
