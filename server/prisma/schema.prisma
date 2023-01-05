@@ -15,6 +15,7 @@ model User {
   password String
   userName String @unique
   address  String
+  lastFaucet String?
 }
 
 model Mission {
@@ -38,3 +39,4 @@ model Comment {
   ipfsHash   String?
   isSelected Boolean @default(false)
 }
+
