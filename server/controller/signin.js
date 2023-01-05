@@ -11,11 +11,11 @@ module.exports = {
 
         if (user.length === 0 || user[0].userId != req.body.id) {
             return res
-                .status(400)
+                .status(200)
                 .send({ status: "falied", message: "로그인 정보가 일치하지 않습니다." });
         } else if (user[0].password != req.body.pw) {
             return res
-                .status(400)
+                .status(200)
                 .send({ status: "falied", message: "로그인 정보가 일치하지 않습니다." });
         }
         return res.status(200).send({
