@@ -21,7 +21,7 @@ router.get('/', (req, res) => {
 router.get('/missions', missions);
 router.get('/missiondetail', missionDetail);
 router.post('/newmission', newMission);
-router.get('/newcomment', newComment);
+router.post('/newcomment', newComment);
 
 router.post('/transfertoken', tokenTransfer);
 
