@@ -71,6 +71,35 @@ const ERC20abi = [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "address",
+        name: "host",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "recruitCount",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "reward",
+        type: "uint256",
+      },
+    ],
+    name: "openMission",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     anonymous: false,
     inputs: [
       {
@@ -381,6 +410,42 @@ const ERC20abi = [
         internalType: "uint256",
         name: "",
         type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "missionId",
+        type: "uint256",
+      },
+    ],
+    name: "mission",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "host",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "recruitCount",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "reward",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct IlsangToken.Mission",
+        name: "",
+        type: "tuple",
       },
     ],
     stateMutability: "view",
