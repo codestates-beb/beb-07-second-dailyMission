@@ -83,6 +83,38 @@ const erc721Abi = [
             }
         ],
         "name": "mintNFT",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "renounceOwnership",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -208,6 +240,19 @@ const erc721Abi = [
         "inputs": [
             {
                 "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
                 "name": "owner",
                 "type": "address"
             }
@@ -258,6 +303,11 @@ const erc721Abi = [
                         "internalType": "uint256",
                         "name": "nftTokenId",
                         "type": "uint256"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "nftTokenURI",
+                        "type": "string"
                     }
                 ],
                 "internalType": "struct MyNFTs.NftTokenData[]",
@@ -300,6 +350,19 @@ const erc721Abi = [
                 "internalType": "string",
                 "name": "",
                 "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
             }
         ],
         "stateMutability": "view",
@@ -433,7 +496,7 @@ const erc721Abi = [
     }
 ]
 
-const contractAddress = "0xB20176f1e9f89026f0dEf4563eA3D2fbF3544356";
+const contractAddress = "0xa0fEAB11735FedeB3A0040575D38A9429270019d";
 
 const web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:7545"));
 
