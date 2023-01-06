@@ -10,7 +10,6 @@ module.exports = {
   passwordHashed: (id, password) => {
     return sha256(id + password);
   },
-
   getPasswordByAddr: async (address) => {
     try {
       const password = await prisma.user.findMany({
@@ -25,7 +24,6 @@ module.exports = {
     }
   },
   checkBodyElements: (body, ...elements) => {
-    const { ...args } = body;
     for (let el of elements) {
       if (!Object.keys(body).includes(el)) {
         return { status: false, message: `Missing ${el}` };

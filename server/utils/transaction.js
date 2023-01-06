@@ -33,7 +33,8 @@ const sendTokenGanache = async (from, to, amount) => {
       return { status: false, message: "Not enough token to send" };
     }
     const data = await tokenContract.methods.transfer(to, amount);
-    const gasInWei = web.utils.toWei(await data.estimateGas(), "gwei");
+    const estimateGas = await data.estimateGas();
+    const gasInWei = await web.utils.toWei(String(estimateGas), "gwei");
     if (!isEthEnough(from, gasInWei)) {
       return { status: false, message: "Not enough ethereum to pay gas" };
     }
