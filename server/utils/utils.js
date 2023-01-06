@@ -24,4 +24,13 @@ module.exports = {
       return false;
     }
   },
+  checkBodyElements: (body, ...elements) => {
+    const { ...args } = body;
+    for (let el of elements) {
+      if (!Object.keys(query).includes(el)) {
+        return { status: false, message: `Missing ${el}` };
+      }
+    }
+    return { status: true };
+  },
 };
