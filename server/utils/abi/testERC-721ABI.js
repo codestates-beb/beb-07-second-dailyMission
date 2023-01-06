@@ -433,7 +433,7 @@ const erc721Abi = [
     }
 ]
 
-const contractAddress = "0x9Cb287cA0e6a1C82d71DEde24bBFF6dc8a794002";
+const contractAddress = "0xB20176f1e9f89026f0dEf4563eA3D2fbF3544356";
 
 const web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:7545"));
 
