@@ -11,12 +11,7 @@ const { newComment } = require("./../controller/commentController");
 const selComment = require("../controller/selcomment");
 const { checkWallet } = require("../controller/checkWalletExist");
 const tokenTransfer = require("../controller/transferToken");
-const {
-  getEthFaucet,
-  getLastEthFaucet,
-  getTokenFaucet,
-  getLastTokenFaucet,
-} = require("../controller/faucetController");
+const { getFaucet, getLastFaucet } = require("../controller/faucetController");
 
 router.get("/", (req, res) => {
   res.send("This is api router");
@@ -35,10 +30,7 @@ router.get("/address/:address", checkWallet);
 router.post("/signup", signUp);
 router.post("/signin", signIn);
 
-router.get("/getethfaucet", getEthFaucet);
-router.get("/lastethfaucet", getLastEthFaucet);
-
-router.get("/gettokenfaucet", getTokenFaucet);
-router.get("/lasttokenfaucet", getLastTokenFaucet);
+router.get("/getfaucet", getFaucet);
+router.get("/lastfaucet", getLastFaucet);
 
 module.exports = router;
