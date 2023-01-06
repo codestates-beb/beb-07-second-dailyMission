@@ -30,11 +30,15 @@ module.exports = {
       const missionDetailRes = await prisma.mission.findUnique({
         where: { id: parseInt(missionid) },
       });
-      if (missionDetailRes)
+      if (missionDetailRes) {
+        const comments = await prisma.comment.findMany({
+          where: { missionId: parseInt(missionid) },
+        });
+        missionDetailRes.comments = comments;
         return res
           .status(200)
           .send({ status: "success", message: missionDetailRes });
-      else
+      } else
         return res
           .status(200)
           .send({ status: "failed", message: "Failed to find the mission" });
@@ -75,8 +79,8 @@ module.exports = {
         reward: parseInt(reward),
         recruitCount: parseInt(recruitCount),
         content: content,
-        createdAt: timeFormatted(),
-        updatedAt: timeFormatted(),
+        createdAt: timeFormatted(new Date()),
+        updatedAt: timeFormatted(new Date()),
         endDate: endDate,
         isComplete: false,
       };

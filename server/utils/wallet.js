@@ -1,10 +1,11 @@
-const Web3 = require("web3");
 const ERC20abi = require("./abi/ERC20abi");
+const { getWeb3, getContract } = require("./web3");
 require("dotenv").config({ path: "../.env" });
 
-const { ERC20_ADDRESS } = process.env;
-const web = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:7545"));
-const tokenContract = new web.eth.Contract(ERC20abi, ERC20_ADDRESS);
+const { LOCAL_RPC_SERVER_NETWORK, LOCAL_RPC_SERVER_PORT, CONTRACT_ADDRESS } =
+  process.env;
+const web = getWeb3(LOCAL_RPC_SERVER_NETWORK, LOCAL_RPC_SERVER_PORT);
+const tokenContract = getContract(web, ERC20abi, CONTRACT_ADDRESS);
 
 module.exports = {
   tokenBalance: async (address) => {
