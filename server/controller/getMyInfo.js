@@ -1,3 +1,4 @@
+const { tokenContract } = require("../utils/abi/testERC-20ABI")
 const prisma = require("../prisma/prisma");
 
 module.exports = {
@@ -22,6 +23,10 @@ module.exports = {
             },
         })
 
+        const myBalance = await tokenContract.methods
+            .balanceOf(user[0].address)
+            .call();
+
         if (user.length === 0 || user[0].userId != req.body.id) {
             return res
                 .status(200)
@@ -35,6 +40,7 @@ module.exports = {
                     status: "success", message: {
                         mission: myMission,
                         comment: myComment,
+                        banlance: myBalance
                     }
                 })
         }
