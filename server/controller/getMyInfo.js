@@ -1,4 +1,6 @@
 const { tokenContract } = require("../utils/abi/testERC-20ABI")
+const { nftContract } = require("../utils/abi/testERC-721ABI")
+
 const prisma = require("../prisma/prisma");
 
 module.exports = {
@@ -27,6 +29,10 @@ module.exports = {
             .balanceOf(user[0].address)
             .call();
 
+        const myNFTs = await nftContract.methods
+            .getNftToken(user[0].address)
+            .call();
+
         if (user.length === 0 || user[0].userId != req.body.id) {
             return res
                 .status(200)
@@ -40,7 +46,8 @@ module.exports = {
                     status: "success", message: {
                         mission: myMission,
                         comment: myComment,
-                        banlance: myBalance
+                        banlance: myBalance,
+                        NFT: myNFTs
                     }
                 })
         }
