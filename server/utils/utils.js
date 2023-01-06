@@ -3,7 +3,9 @@ const prisma = require("../prisma/prisma");
 
 module.exports = {
   timeFormatted: (time) => {
-    const [day, hour] = time.toISOString().split("T");
+    const timeDiff = 9 * 60 * 60 * 1000;
+    const kst = new Date(time.getTime() + timeDiff);
+    const [day, hour] = kst.toISOString().split("T");
     return day.split("-").join("") + hour.split(":").slice(0, 2).join("");
   },
 

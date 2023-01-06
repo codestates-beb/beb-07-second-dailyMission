@@ -24,7 +24,7 @@ module.exports = {
       const { missionid } = req.query;
       if (!missionid || parseInt(missionid)) {
         return res
-          .send(400)
+          .status(400)
           .send({ status: "failed", message: "Invalid missionid" });
       }
       const missionDetailRes = await prisma.mission.findUnique({
