@@ -5,7 +5,7 @@ const prisma = require("../prisma/prisma");
 
 module.exports = {
     getMyInfo: async (req, res) => {
-        const { id } = req.body;
+        const { id } = req.query;
 
         const user = await prisma.user.findMany({
             where: {
@@ -33,13 +33,13 @@ module.exports = {
             .getNftToken(user[0].address)
             .call();
 
-        if (user.length === 0 || user[0].userId != req.body.id) {
+        if (user.length === 0 || user[0].userId != req.query.id) {
             return res
                 .status(200)
                 .send({ status: "falied" });
         }
 
-        if (user[0].userId === req.body.id) {
+        if (user[0].userId === req.query.id) {
             return res
                 .status(200)
                 .send({
