@@ -1,5 +1,5 @@
-const { sha256 } = require("js-sha256").sha256;
-const prisma = require("../prisma/prisma");
+const { sha256 } = require('js-sha256').sha256;
+const prisma = require('../prisma/prisma');
 
 module.exports = {
   timeFormatted: (time) => {
