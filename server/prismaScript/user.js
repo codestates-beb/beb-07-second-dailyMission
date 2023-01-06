@@ -22,4 +22,17 @@ const isWalletExist = async (walletAddr) => {
   }
 };
 
-module.exports = { getUserById, isWalletExist };
+const getUserByAddress = async (address) => {
+  try {
+    const userData = await prisma.user.findFirst({
+      where: {
+        address,
+      },
+    });
+    return userData;
+  } catch (e) {
+    return null;
+  }
+};
+
+module.exports = { getUserById, isWalletExist, getUserByAddress };
