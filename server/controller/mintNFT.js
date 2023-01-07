@@ -9,7 +9,7 @@ const abi = require('../utils/abi/erc721ABI');
 const web3 = getWeb3(network, port);
 const contract = getContract(web3, abi, erc721address);
 
-const { isWalletExist } = require('../prismaScript/user');
+const { getUserByAddress } = require('../prismaScript/user');
 
 const mintNFT = async (req, res) => {
   const body = req.body;
@@ -20,7 +20,7 @@ const mintNFT = async (req, res) => {
   )
     return res.status(400).send({ status: 'fail', message: 'Bad Request' });
 
-  const userExist = await isWalletExist(body.address);
+  const userExist = await getUserByAddress(body.address);
   if (!userExist)
     return res
       .status(200)
