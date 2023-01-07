@@ -4,7 +4,7 @@ const network = process.env.LOCAL_RPC_SERVER_NETWORK;
 const port = process.env.LOCAL_RPC_SERVER_PORT;
 const erc721address = process.env.CONTRACT_ADDRESS_721;
 const serverAddress = process.env.SERVER_ADDRESS;
-const abi = require('../utils/abi/ERC-721ABI');
+const abi = require('../utils/abi/erc721ABI');
 
 const web3 = getWeb3(network, port);
 const contract = getContract(web3, abi, erc721address);

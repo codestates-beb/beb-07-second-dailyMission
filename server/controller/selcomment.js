@@ -11,7 +11,7 @@ const {
 const { getWeb3, getContract } = require('../utils/web3');
 
 require('dotenv').config();
-const abi = require('../utils/abi/ICTokenABI');
+const abi = require('../utils/abi/erc20ABI');
 const network = process.env.LOCAL_RPC_SERVER_NETWORK;
 const port = process.env.LOCAL_RPC_SERVER_PORT;
 const contractAddress = process.env.CONTRACT_ADDRESS;

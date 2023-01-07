@@ -1,7 +1,7 @@
 require('dotenv').config();
 const { isWalletExist, getUserByAddress } = require('../prismaScript/user');
 const { getWeb3, getContract } = require(`../utils/web3`);
-const abi = require(`../utils/abi/ICTokenABI`);
+const abi = require(`../utils/abi/erc20ABI`);
 
 // fetch env variables
 const network = process.env.LOCAL_RPC_SERVER_NETWORK;

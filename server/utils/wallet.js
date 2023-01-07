@@ -1,6 +1,6 @@
-const ERC20abi = require("./abi/ERC20abi");
-const { getWeb3, getContract } = require("./web3");
-require("dotenv").config({ path: "../.env" });
+const ERC20abi = require('./abi/erc20ABI');
+const { getWeb3, getContract } = require('./web3');
+require('dotenv').config({ path: '../.env' });
 
 const { LOCAL_RPC_SERVER_NETWORK, LOCAL_RPC_SERVER_PORT, CONTRACT_ADDRESS } =
   process.env;

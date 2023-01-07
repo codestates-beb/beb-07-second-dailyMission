@@ -1,8 +1,8 @@
-const ERC20abi = require("./abi/ERC20abi");
-const { ethBalance, tokenBalance } = require("./wallet");
-const { getPasswordByAddr } = require("./utils");
-const { getWeb3, getContract } = require("./web3");
-require("dotenv").config({ path: "../.env" });
+const ERC20abi = require('./abi/erc20ABI');
+const { ethBalance, tokenBalance } = require('./wallet');
+const { getPasswordByAddr } = require('./utils');
+const { getWeb3, getContract } = require('./web3');
+require('dotenv').config({ path: '../.env' });
 
 const {
   LOCAL_RPC_SERVER_NETWORK,
@@ -30,21 +30,21 @@ const isTokenEnough = async (from, amount) => {
 const sendTokenGanache = async (from, to, amount) => {
   try {
     if (!isTokenEnough) {
-      return { status: false, message: "Not enough token to send" };
+      return { status: false, message: 'Not enough token to send' };
     }
     const data = await tokenContract.methods.transfer(to, amount);
     const estimateGas = await data.estimateGas();
-    const gasInWei = await web.utils.toWei(String(estimateGas), "gwei");
+    const gasInWei = await web.utils.toWei(String(estimateGas), 'gwei');
     if (!isEthEnough(from, gasInWei)) {
-      return { status: false, message: "Not enough ethereum to pay gas" };
+      return { status: false, message: 'Not enough ethereum to pay gas' };
     }
     const result = await data.send({ from: from });
     return {
       status: result.status,
       message:
         from === SERVER_ADDRESS
-          ? "Rewarded successfully"
-          : "Sended successfully",
+          ? 'Rewarded successfully'
+          : 'Sended successfully',
     };
   } catch (e) {
     console.log(e);
@@ -61,12 +61,12 @@ const signTx = async (tx) => {
     const hash = web.eth.sendSignedTransaction(
       txSigned.rawTransaction,
       (err, hash) => {
-        if (err) console.log("Transaction Error:", err);
+        if (err) console.log('Transaction Error:', err);
       }
     );
     return hash;
   } catch (err) {
-    console.log("Promise Error:", err);
+    console.log('Promise Error:', err);
 
     return false;
   }
@@ -78,7 +78,7 @@ module.exports = {
   sendTokenGanache: async (from, to, amount) => {
     const password = await getPasswordByAddr(from);
 
-    if (!password) return { status: false, message: "Address Not Found." };
+    if (!password) return { status: false, message: 'Address Not Found.' };
 
     const unlock = await web.eth.personal.unlockAccount(from, password, 3);
     if (unlock) {
@@ -86,11 +86,11 @@ module.exports = {
       await web.eth.personal.lockAccount(from);
 
       return giveRes;
-    } else return { status: false, message: "Failed to unlock address" };
+    } else return { status: false, message: 'Failed to unlock address' };
   },
   openMission: async (host, amount) => {
     const password = await getPasswordByAddr(host);
-    if (!password) return { status: false, message: "Address Not Found." };
+    if (!password) return { status: false, message: 'Address Not Found.' };
 
     const unlock = await web.eth.personal.unlockAccount(host, password, 3);
     if (unlock) {
@@ -98,21 +98,21 @@ module.exports = {
       await web.eth.personal.lockAccount(host);
 
       return giveRes;
-    } else return { status: false, message: "Failed to unlock address" };
+    } else return { status: false, message: 'Failed to unlock address' };
   },
   // rewardTokenGoerli: async (to, amount) =>
   //   await sendTokenGoerli(ADMIN_ADDRESS, to, amount),
   // sendTokenGoerli: async (from, to, amount) =>
   //   await sendTokenGoerli(from, to, amount),
   sendEthereum: async (address, amount) => {
-    const wei = await web.utils.toWei(String(amount), "ether");
+    const wei = await web.utils.toWei(String(amount), 'ether');
     if (!(await isEthEnough(SERVER_ADDRESS, wei))) {
       return {
-        status: "failed",
-        message: "Not enought ethereum in server address",
+        status: 'failed',
+        message: 'Not enought ethereum in server address',
       };
     }
-    const nonce = await web.eth.getTransactionCount(SERVER_ADDRESS, "latest");
+    const nonce = await web.eth.getTransactionCount(SERVER_ADDRESS, 'latest');
     const tx = {
       to: address,
       value: wei,
@@ -122,13 +122,13 @@ module.exports = {
     const hash = await signTx(tx);
     if (hash) {
       return {
-        status: "success",
+        status: 'success',
         message: {
           amount: amount,
         },
       };
     } else {
-      return { status: "failed", message: "Transaction failed" };
+      return { status: 'failed', message: 'Transaction failed' };
     }
   },
   getTokenLasfFaucet: async (address) => {

@@ -1,6 +1,4 @@
 require('dotenv').config();
-// const { tokenContract } = require('../utils/abi/testERC-20ABI');
-// const { nftContract } = require('../utils/abi/testERC-721ABI');
 
 const network = process.env.LOCAL_RPC_SERVER_NETWORK;
 const port = process.env.LOCAL_RPC_SERVER_PORT;
@@ -8,8 +6,8 @@ const erc20address = process.env.CONTRACT_ADDRESS;
 const erc721address = process.env.CONTRACT_ADDRESS_721;
 
 const { getWeb3, getContract } = require('../utils/web3');
-const erc20abi = require('../utils/abi/ERC-20ABI');
-const erc721abi = require('../utils/abi/ERC-721ABI');
+const erc20abi = require('../utils/abi/erc20ABI');
+const erc721abi = require('../utils/abi/erc721ABI');
 const web3 = getWeb3(network, port);
 const tokenContract = getContract(web3, erc20abi, erc20address);
 const nftContract = getContract(web3, erc721abi, erc721address);
