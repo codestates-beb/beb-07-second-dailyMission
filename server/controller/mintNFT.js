@@ -18,13 +18,12 @@ const mintNFT = async (req, res) => {
   )
     return res.status(400).send({ status: 'fail', message: 'Bad Request' });
 
-  const mintRes = await contract.methods
-    .mintNFT(body.tokenURI, body.address)
-    .send({ from: serverAddress, gas: 4712388 });
-  console.log(mintRes);
-  if (mintRes) {
+  try {
+    await contract.methods
+      .mintNFT(body.tokenURI, body.address)
+      .send({ from: serverAddress, gas: 4712388 });
     return res.status(201).send({ status: 'Success', message: 'Mint Success' });
-  } else {
+  } catch (e) {
     return res.status(204).send({ status: 'Fail', message: 'failed' });
   }
 };
