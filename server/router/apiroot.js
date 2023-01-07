@@ -19,7 +19,7 @@ const { getFaucet, getLastFaucet } = require('../controller/faucetController');
 const mintNFT = require('../controller/mintNFT');
 
 router.get('/', (req, res) => {
-  res.send('This is api router');
+  res.redirect('https://documenter.getpostman.com/view/3535243/2s8Z75RUrG');
 });
 
 router.get('/missions', missions);

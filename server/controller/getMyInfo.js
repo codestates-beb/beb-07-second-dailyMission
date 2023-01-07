@@ -25,7 +25,10 @@ module.exports = {
         userId: id,
       },
     });
-
+    if (user.length === 0)
+      return res
+        .status(200)
+        .send({ status: 'fail', message: 'User does not exist' });
     const myMission = await prisma.mission.findMany({
       where: {
         userId: id,
