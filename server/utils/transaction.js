@@ -88,6 +88,18 @@ module.exports = {
       return giveRes;
     } else return { status: false, message: "Failed to unlock address" };
   },
+  openMission: async (host, amount) => {
+    const password = await getPasswordByAddr(host);
+    if (!password) return { status: false, message: "Address Not Found." };
+
+    const unlock = await web.eth.personal.unlockAccount(host, password, 3);
+    if (unlock) {
+      const giveRes = await sendTokenGanache(host, SERVER_ADDRESS, amount);
+      await web.eth.personal.lockAccount(host);
+
+      return giveRes;
+    } else return { status: false, message: "Failed to unlock address" };
+  },
   // rewardTokenGoerli: async (to, amount) =>
   //   await sendTokenGoerli(ADMIN_ADDRESS, to, amount),
   // sendTokenGoerli: async (from, to, amount) =>
