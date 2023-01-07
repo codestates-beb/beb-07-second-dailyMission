@@ -22,7 +22,6 @@ const transferToken = async (req, res) => {
     return res.status(400).send({ status: 'fail', message: 'Bad Request' });
 
   const senderData = await getUserByAddress(senderAddr);
-  console.log(senderData);
   if (!senderData)
     return res
       .status(200)
