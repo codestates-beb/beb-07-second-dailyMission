@@ -55,7 +55,7 @@ contract MyNFTs is ERC721URIStorage, Ownable, ERC721Enumerable {
         return super.tokenURI(tokenId);
     }
 
-    function mintNFT(string memory tokenURI)
+    function mintNFT(string memory tokenURI, address receiver)
         public
         onlyOwner
         returns (uint256)
@@ -63,7 +63,7 @@ contract MyNFTs is ERC721URIStorage, Ownable, ERC721Enumerable {
         _tokenIds.increment();
 
         uint256 newItemId = _tokenIds.current();
-        _mint(msg.sender, newItemId);
+        _mint(receiver, newItemId);
         _setTokenURI(newItemId, tokenURI);
 
         _tokenData[newItemId] = tokenURI;
