@@ -1,5 +1,9 @@
-const prisma = require('../prisma/prisma');
-const { timeFormatted } = require('../utils/utils');
+const prisma = require("../prisma/prisma");
+const { timeFormatted } = require("../utils/utils");
+const { openMission } = require("../utils/transaction");
+
+const missionFee = 35;
+
 
 module.exports = {
   missions: async (req, res) => {
@@ -72,25 +76,32 @@ module.exports = {
 
       // 잔고 체크 + address와 비밀번호를 가지고 total = reward + 35 token 송금.
       // contract.methods.balanceOf(address) 과 total 비교
-      const address = await prisma.user.findUnique({
+      const userData = await prisma.user.findUnique({
         where: { userId: userId },
       });
+      const { address } = userData;
+      const openMissionRes = await openMission(address, reward + missionFee);
 
-      data = {
-        userId: userId,
-        title: title,
-        reward: parseInt(reward),
-        recruitCount: parseInt(recruitCount),
-        content: content,
-        createdAt: timeFormatted(new Date()),
-        updatedAt: timeFormatted(new Date()),
-        endDate: endDate,
-        isComplete: false,
-      };
-      const newMissionRes = await prisma.mission.create({ data: data });
-      return res
-        .status(200)
-        .send({ status: 'success', message: newMissionRes });
+      if (openMissionRes.status) {
+        data = {
+          userId: userId,
+          title: title,
+          reward: parseInt(reward),
+          recruitCount: parseInt(recruitCount),
+          content: content,
+          createdAt: timeFormatted(new Date()),
+          updatedAt: timeFormatted(new Date()),
+          endDate: endDate,
+          isComplete: false,
+        };
+        const newMissionRes = await prisma.mission.create({ data: data });
+        return res
+          .status(200)
+          .send({ status: "success", message: newMissionRes });
+      } else
+        return res
+          .status(200)
+          .send({ status: "failed", message: "Failed opening mission" });
     } catch (e) {
       console.log(e);
       return res.status(400).send({ status: 'failed', message: e });

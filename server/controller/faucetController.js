@@ -7,7 +7,7 @@ const {
 } = require("../utils/transaction");
 const { timeFormatted, checkBodyElements } = require("../utils/utils");
 
-const tokenFaucetAmount = 50;
+const tokenFaucetAmount = 50000;
 const ethFaucetAmount = 1;
 
 const isDayPassed = (timestamp) => {
