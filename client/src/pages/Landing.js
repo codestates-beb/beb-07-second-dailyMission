@@ -30,7 +30,7 @@ const Landing = () => {
         <div>ID</div>
         <div>R/C</div>
         <div>Reward</div>
-        <div>Title</div>
+        <div>Title(selected/comments)</div>
         <div>Author</div>
         <div>CreatedAt</div>
       </div>
