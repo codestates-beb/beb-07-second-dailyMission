@@ -37,6 +37,10 @@ const selComment = async (req, res) => {
   const comments = await getCommentsById(missionId);
 
   const checkData = await checkSelected(missionId);
+  if (!checkData)
+    return res
+      .status(200)
+      .send({ status: 'Failed', message: 'Mission ID does not exist' });
   let missionData;
   if (checkData.recruitCount === checkData.selectedAmount) {
     missionData = await setComplete(missionId);
