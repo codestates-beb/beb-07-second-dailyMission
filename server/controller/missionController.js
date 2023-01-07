@@ -1,5 +1,5 @@
-const prisma = require("../prisma/prisma");
-const { timeFormatted } = require("../utils/utils");
+const prisma = require('../prisma/prisma');
+const { timeFormatted } = require('../utils/utils');
 
 module.exports = {
   missions: async (req, res) => {
@@ -11,21 +11,24 @@ module.exports = {
       });
       return res
         .status(200)
-        .send({ status: "success", message: missionsNotCompleted });
+        .send({ status: 'success', message: missionsNotCompleted });
     } catch (e) {
       console.log(e);
       return res
         .status(400)
-        .send({ status: "failed", message: "Failed to call missions" });
+        .send({ status: 'failed', message: 'Failed to call missions' });
     }
   },
   missionDetail: async (req, res) => {
     try {
       const { missionid } = req.query;
-      if (!missionid || parseInt(missionid)) {
+      if (
+        typeof missionid === 'undefined' ||
+        Object.keys(req.query).length !== 1
+      ) {
         return res
           .status(400)
-          .send({ status: "failed", message: "Invalid missionid" });
+          .send({ status: 'failed', message: 'Invalid missionid' });
       }
       const missionDetailRes = await prisma.mission.findUnique({
         where: { id: parseInt(missionid) },
@@ -37,14 +40,14 @@ module.exports = {
         missionDetailRes.comments = comments;
         return res
           .status(200)
-          .send({ status: "success", message: missionDetailRes });
+          .send({ status: 'success', message: missionDetailRes });
       } else
         return res
           .status(200)
-          .send({ status: "failed", message: "Failed to find the mission" });
+          .send({ status: 'failed', message: 'Failed to find the mission' });
     } catch (e) {
       console.log(e);
-      return res.status(400).send({ status: "failed", message: e });
+      return res.status(400).send({ status: 'failed', message: e });
     }
   },
   newMission: async (req, res) => {
@@ -61,9 +64,9 @@ module.exports = {
         !endDate
       ) {
         return res.status(400).send({
-          status: "failed",
+          status: 'failed',
           message:
-            "Check body data. Body data needs userId, title, reward, recruitCount, content, endDate",
+            'Check body data. Body data needs userId, title, reward, recruitCount, content, endDate',
         });
       }
 
@@ -87,10 +90,10 @@ module.exports = {
       const newMissionRes = await prisma.mission.create({ data: data });
       return res
         .status(200)
-        .send({ status: "success", message: newMissionRes });
+        .send({ status: 'success', message: newMissionRes });
     } catch (e) {
       console.log(e);
-      return res.status(400).send({ status: "failed", message: e });
+      return res.status(400).send({ status: 'failed', message: e });
     }
   },
 };

@@ -24,7 +24,7 @@ const mintNFT = async (req, res) => {
       .send({ from: serverAddress, gas: 4712388 });
     return res.status(201).send({ status: 'Success', message: 'Mint Success' });
   } catch (e) {
-    return res.status(204).send({ status: 'Fail', message: 'failed' });
+    return res.status(204).send({ status: 'Fail', message: 'Mint failed' });
   }
 };
 
