@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
+
 const { signUp } = require('../controller/signup');
 const { signIn } = require('../controller/signin');
 const { getMyInfo } = require('../controller/getMyInfo');
+
 const {
   missionDetail,
   newMission,
@@ -13,9 +15,11 @@ const selComment = require('../controller/selcomment');
 const { checkWallet } = require('../controller/checkWalletExist');
 const tokenTransfer = require('../controller/transferToken');
 const devRouter = require('../controller/dev/devRouter');
+const { getFaucet, getLastFaucet } = require('../controller/faucetController');
+const mintNFT = require('../controller/mintNFT');
 
 router.get('/', (req, res) => {
-  res.send('This is api router');
+  res.redirect('https://documenter.getpostman.com/view/3535243/2s8Z75RUrG');
 });
 
 router.get('/missions', missions);
@@ -28,10 +32,14 @@ router.post('/transfertoken', tokenTransfer);
 router.post('/selcomment', selComment);
 router.get('/address/:address', checkWallet);
 router.use('/dev', devRouter);
+router.post('/mintnft', mintNFT);
 
 router.post('/signup', signUp);
 router.post('/signin', signIn);
 
-router.get('/mypage', getMyInfo)
+router.get('/getfaucet', getFaucet);
+router.get('/lastfaucet', getLastFaucet);
+
+router.get('/mypage', getMyInfo);
 
 module.exports = router;

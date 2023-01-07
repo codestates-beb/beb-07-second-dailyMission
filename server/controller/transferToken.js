@@ -1,7 +1,7 @@
 require('dotenv').config();
-const { isWalletExist } = require('../prismaScript/user');
+const { isWalletExist, getUserByAddress } = require('../prismaScript/user');
 const { getWeb3, getContract } = require(`../utils/web3`);
-const abi = require(`../utils/abi/ICTokenABI`);
+const abi = require(`../utils/abi/erc20ABI`);
 
 // fetch env variables
 const network = process.env.LOCAL_RPC_SERVER_NETWORK;
@@ -21,17 +21,24 @@ const transferToken = async (req, res) => {
   )
     return res.status(400).send({ status: 'fail', message: 'Bad Request' });
 
-  const receiver = await isWalletExist(body.receiverAddr);
-  if (!receiver)
+  const senderData = await getUserByAddress(senderAddr);
+  if (!senderData)
     return res
       .status(200)
-      .send({ status: 'fail', message: `Recevier Wallet Does Not Exist` });
+      .send({ status: 'fail', message: `Sender Wallet Does Not Exist in DB` });
+
+  const receiver = await isWalletExist(body.receiverAddr);
+  if (!receiver)
+    return res.status(200).send({
+      status: 'fail',
+      message: `Recevier Wallet Does Not Exist in DB`,
+    });
 
   const transferData = await contract.methods.transfer(receiverAddr, amount);
   const ethGas = await transferData.estimateGas();
 
   const ethBalance = await web3.eth.getBalance(senderAddr);
-  if (ethBalance < ethBalance)
+  if (ethBalance < ethGas)
     return res
       .status(200)
       .send({ status: 'fail', message: 'Not enough ETH for gas' });
@@ -42,12 +49,27 @@ const transferToken = async (req, res) => {
       .status(200)
       .send({ status: 'fail', message: 'Not enough Token' });
 
+  const unlock = await web3.eth.personal.unlockAccount(
+    senderAddr,
+    senderData.password,
+    3
+  );
+
+  if (!unlock)
+    return res
+      .status(200)
+      .send({ status: 'fail', message: 'Failed to unlock sender wallet' });
+
   const transferRes = await transferData.send({ from: senderAddr });
-  if (transferRes)
+  if (transferRes) {
+    await web3.eth.personal.lockAccount(senderAddr);
     return res
       .status(200)
       .send({ status: 'success', message: 'Transfer Success' });
-  else return res.status(200).send({ status: 'fail', message: 'Unknow Error' });
+  } else {
+    await web3.eth.personal.lockAccount(senderAddr);
+    return res.status(200).send({ status: 'fail', message: 'Unknow Error' });
+  }
 };
 
 module.exports = transferToken;

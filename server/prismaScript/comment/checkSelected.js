@@ -25,6 +25,7 @@ const checkSelected = async (missionId) => {
     console.log(e);
     return null;
   }
+  if (!missionData || !selectedAmount) return null;
   return {
     recruitCount: missionData.recruitCount,
     selectedAmount,
