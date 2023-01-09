@@ -2,7 +2,8 @@ import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import Landing from "./pages/Landing";
 import Mypage from "./pages/MyPage";
-import React, { useState } from "react";
+import React from "react";
+
 import "bootstrap/dist/css/bootstrap.css";
 import MissionDetail from "./pages/MissionDetail";
 
@@ -13,7 +14,7 @@ function App() {
         <Route path="/" element={<Landing />}></Route>
         <Route path="/mypage" element={<Mypage />}></Route>
         <Route
-          path="/missiondetail"
+          path={"/missiondetail"}
           element={<MissionDetail isWriting={false} />}
         />
         <Route

@@ -2,9 +2,14 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Form, FormGroup, Label, Col, Input, Button, Row } from "reactstrap";
 import { mergeDateTime, checkUndefine } from "../../utils/utils.js";
+import apiUrl from "../../utils/api";
+import { mission } from "../../status/mission";
+import { useRecoilState } from "recoil";
 
 const MissionInfo = ({ isWriting }) => {
-  const mission = {};
+  const userid = "test3";
+  const [misionId, setMissionId] = useRecoilState(mission);
+  // const mission = {};
   const [missionValues, setMissionValues] = useState(mission);
   const handleChange = (e) => {
     setMissionValues({
@@ -16,11 +21,12 @@ const MissionInfo = ({ isWriting }) => {
 
   const handleSubmit = (e) => {
     // request body -> userid, title, reward, recruitCount, content, endDate -> check and fill request body
+
     const { title, reward, recruitCount, content, date, time } = missionValues;
     if (!checkUndefine(title, reward, recruitCount, content, date, time)) {
       // const endDate = mergeDateTime(missionValues.date, missionValues.time);
       const reqBody = {
-        userid: "",
+        userId: userid,
         title: missionValues.title,
         reward: missionValues.reward,
         recruitCount: missionValues.recruitCount,
@@ -28,7 +34,9 @@ const MissionInfo = ({ isWriting }) => {
         endDate: mergeDateTime(missionValues.date, missionValues.time),
       };
       console.log(reqBody);
-      // axios.post('/newmission')
+      axios
+        .post(`${apiUrl}newmission`, reqBody)
+        .then((res) => console.log(res));
     } else {
       console.log("missing arg");
     }

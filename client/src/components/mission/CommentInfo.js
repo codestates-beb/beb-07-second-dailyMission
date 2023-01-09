@@ -3,7 +3,6 @@ import { Form, FormGroup, Label, Col, Input, Button, Row } from "reactstrap";
 import { mergeDateTime, checkUndefine } from "../../utils/utils.js";
 
 const CommentInfo = () => {
-  //   isWriting = true;
   const mission = {};
   const [commentValues, setCommentValues] = useState(mission);
   const handleChange = (e) => {

@@ -19,6 +19,7 @@ const Landing = () => {
 
   useEffect(() => {
     getMissions();
+    console.log(missions);
   }, []);
 
   return (
