@@ -2,7 +2,10 @@
 
 
 <div align=center>
-# beb-07-second-DailyMission
+<h2>Team Notion</h2>
+Click =>> <a href="https://crystalline-jodhpur-c0e.notion.site/Project-2-838f989f0c2a41fc8e0b616205b2332d" target="_blank">
+<img src="https://simpleicons.org/icons/notion.svg" width=100 height=100></a>
+</br></br>
 <h2>👥 Team 👥</h2>
 <table>
  <tr>
