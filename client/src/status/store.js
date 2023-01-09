@@ -5,5 +5,7 @@ export const status = atom({
   default: {
     userId: 'unknown',
     isSigned: false,
+    address: '',
+    username: '',
   },
 });
