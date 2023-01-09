@@ -10,12 +10,16 @@ import { useRecoilState } from 'recoil';
 import { status } from '../status/store';
 
 import isSigned from '../status/isSigned';
-import { useNavigate } from 'react-router-dom';
+import {
+  UNSAFE_enhanceManualRouteObjects,
+  useNavigate,
+} from 'react-router-dom';
 
 const Landing = () => {
   const [signStatus, setSignStatus] = useRecoilState(status);
   const [missions, setMissions] = useState([]);
   const [curPage, setPage] = useState(0);
+  const navigate = useNavigate();
   const getMissions = () => {
     axios.get(`${apiUrl}/missions`).then((e) => {
       e.data.status === 'success'
@@ -34,7 +38,7 @@ const Landing = () => {
   };
 
   const newMissionClickHandler = () => {
-    if (signStatus.isSigned) useNavigate('/newmission');
+    if (signStatus.isSigned) navigate('/newmission');
     else alert('You have to sign up to create a new mission!');
   };
   useEffect(() => {
