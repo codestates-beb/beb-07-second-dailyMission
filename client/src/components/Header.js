@@ -21,7 +21,7 @@ const Header = () => {
             <Link to="/"><img src="/assets/logo.png" /> </Link>
             {signStatus.userId === "unknown" ?
                 <button onClick={openModal}>sign in</button> :
-                <div>{signStatus.userName}</div>}
+                <div>{signStatus.userName}님 안녕하세요!</div>}
             <LoginModal open={modalOpen} close={closeModal}> </LoginModal>
             <Link to="/signup"><button>sign up</button></Link>
         </div>

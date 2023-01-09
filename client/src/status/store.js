@@ -6,6 +6,6 @@ export const status = atom({
     userId: 'unknown',
     isSigned: false,
     address: '',
-    username: '',
+    userName: '',
   },
 });

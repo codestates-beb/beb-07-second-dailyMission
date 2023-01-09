@@ -4,6 +4,7 @@ import apiUrl from '../utils/api';
 
 import { useRecoilState } from 'recoil';
 import { status } from '../status/store';
+import signData from '../status/isSigned';
 
 import './MyPage.css';
 
@@ -11,7 +12,16 @@ const Mypage = () => {
   const [userInfo, setUserInfo] = useState();
   const [signStatus, setSignStatus] = useRecoilState(status);
   // axios.get(`${apiUrl}/mypage?id=${}`)
-  useEffect(() => {});
+  useEffect(() => {
+    const userData = signData()
+    if (userData) {
+      setSignStatus(() => userData)
+    } else {
+      alert('로그인이 필요합니다.')
+    }
+  }, []);
+
+
   return (
     <div align="center">
       <div className="mypage">
