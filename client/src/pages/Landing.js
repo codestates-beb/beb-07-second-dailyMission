@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import apiUrl from '../utils/api';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import apiUrl from "../utils/api";
 
-import Mission from '../components/landing/mission';
+import Mission from "../components/landing/mission";
 
-import './Landing.css';
+import "./Landing.css";
+import { Link } from "react-router-dom";
 
 const Landing = () => {
   const [missions, setMissions] = useState([]);
   const getMissions = () => {
     axios.get(`${apiUrl}/missions`).then((e) => {
-      e.data.status === 'success'
+      e.data.status === "success"
         ? setMissions(e.data.message)
         : setMissions([]);
     });
@@ -25,7 +26,10 @@ const Landing = () => {
       <div>This is Landing</div>
       <button>prev page</button>
       <button>next page</button>
-      <button>new mission</button>
+      {/* <button>new mission</button> */}
+      <Link to="/newmission">
+        <button>new mission</button>
+      </Link>
       <div className="missionHeader">
         <div>ID</div>
         <div>R/C</div>

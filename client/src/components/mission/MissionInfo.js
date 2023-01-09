@@ -1,19 +1,10 @@
 import axios from "axios";
 import React, { useState } from "react";
-import {
-  Form,
-  FormGroup,
-  Label,
-  Col,
-  Input,
-  Button,
-  FormText,
-  Row,
-} from "reactstrap";
+import { Form, FormGroup, Label, Col, Input, Button, Row } from "reactstrap";
 import { mergeDateTime, checkUndefine } from "../../utils/utils.js";
 
-const MissionInfo = ({ mission, isWriting }) => {
-  // isWriting = true;
+const MissionInfo = ({ isWriting }) => {
+  const mission = {};
   const [missionValues, setMissionValues] = useState(mission);
   const handleChange = (e) => {
     setMissionValues({
