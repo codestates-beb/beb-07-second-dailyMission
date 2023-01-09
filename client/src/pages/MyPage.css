@@ -1,0 +1,30 @@
+.mypage{
+  display:grid;
+  grid-template-rows:1fr 1fr 1fr 1fr;
+}
+
+.userInfo{
+  display: grid;
+  grid-template-columns: 1fr 15fr;
+}
+
+.tokenInfo{
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+}
+
+.balances{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.transferToken{
+  display: grid;
+  grid-template-columns: 15fr 1fr 1fr;
+  gap:5px;
+}
+
+.myStuffs{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
