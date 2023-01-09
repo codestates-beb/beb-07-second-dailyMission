@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import apiUrl from '../utils/api';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import apiUrl from "../utils/api";
 
-import Mission from '../components/landing/mission';
+import Mission from "../components/landing/mission";
 
-import './Landing.css';
+import "./Landing.css";
+import { Link } from "react-router-dom";
 
-import { useRecoilState } from 'recoil';
-import { status } from '../status/store';
+import { useRecoilState } from "recoil";
+import { status } from "../status/store";
 
 const Landing = () => {
   const [signStatus, setSignStatus] = useRecoilState(status);
@@ -16,7 +17,7 @@ const Landing = () => {
   const [curPage, setPage] = useState(0);
   const getMissions = () => {
     axios.get(`${apiUrl}/missions`).then((e) => {
-      e.data.status === 'success'
+      e.data.status === "success"
         ? setMissions(e.data.message)
         : setMissions([]);
     });
@@ -32,16 +33,17 @@ const Landing = () => {
   };
   useEffect(() => {
     getMissions();
+    console.log(missions);
   }, []);
 
   const settingSignStatus = () => {
     setSignStatus((status) => {
-      return { userId: 'asdf', isSigned: true };
+      return { userId: "asdf", isSigned: true };
     });
   };
   const navigate = useNavigate();
   const navigatetomypage = () => {
-    navigate('/mypage');
+    navigate("/mypage");
   };
 
   return (
