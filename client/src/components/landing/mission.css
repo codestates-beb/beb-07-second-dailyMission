@@ -1,5 +1,5 @@
 .mission{
-  width: 900px;
+  margin-bottom: 10px;
   border-style: solid;
   border-radius: 10px;
   padding-left: 10px;
@@ -7,6 +7,10 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1.5fr 13fr 2.5fr 5fr ;
   grid-template-rows: 1fr 1fr;
+  align-items: center;
+}
+.mission:hover{
+  cursor: pointer;
 }
 
 .id{
