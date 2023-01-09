@@ -11,7 +11,7 @@ import { useRecoilState } from 'recoil';
 import { status } from '../status/store';
 
 const Landing = () => {
-  const [signStatus, setStatus] = useRecoilState(status);
+  const [signStatus, setSignStatus] = useRecoilState(status);
   const [missions, setMissions] = useState([]);
   const [curPage, setPage] = useState(0);
   const getMissions = () => {
@@ -34,8 +34,8 @@ const Landing = () => {
     getMissions();
   }, []);
 
-  const setSignStatus = () => {
-    setStatus((status) => {
+  const settingSignStatus = () => {
+    setSignStatus((status) => {
       return { userId: 'asdf', isSigned: true };
     });
   };
@@ -49,7 +49,7 @@ const Landing = () => {
       <div className="Landing">
         <div>This is Landing</div>
         <div>{signStatus.userId}</div>
-        <button onClick={setSignStatus}>login</button>
+        <button onClick={settingSignStatus}>login</button>
         <button onClick={navigatetomypage}>mypage</button>
         <div className="buttonContainer">
           <button className="prevPage" onClick={prevPage}>
