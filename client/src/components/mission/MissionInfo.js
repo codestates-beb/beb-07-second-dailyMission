@@ -1,16 +1,18 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, FormGroup, Label, Col, Input, Button, Row } from "reactstrap";
 import { mergeDateTime, checkUndefine } from "../../utils/utils.js";
 import apiUrl from "../../utils/api";
-import { mission } from "../../status/mission";
-import { useRecoilState } from "recoil";
+import { missionDetailState } from "../../status/mission";
+import { useRecoilValue } from "recoil";
+import { dateFormatter } from "../../utils/dateFormatter";
 
 const MissionInfo = ({ isWriting }) => {
   const userid = "test3";
-  const [misionId, setMissionId] = useRecoilState(mission);
-  // const mission = {};
-  const [missionValues, setMissionValues] = useState(mission);
+  const missionDetail = useRecoilValue(missionDetailState);
+  const [missionValues, setMissionValues] = useState(
+    isWriting ? {} : missionDetail
+  );
   const handleChange = (e) => {
     setMissionValues({
       ...missionValues,
@@ -18,13 +20,20 @@ const MissionInfo = ({ isWriting }) => {
     });
     console.log(missionValues);
   };
-
+  useEffect(() => {
+    if (!isWriting) {
+      const [date, time] = dateFormatter(missionValues.endDate).split(" ");
+      setMissionValues((curr) => {
+        const withDateTime = { ...curr };
+        withDateTime.date = "20" + date;
+        withDateTime.time = time;
+        return withDateTime;
+      });
+    }
+  }, []);
   const handleSubmit = (e) => {
-    // request body -> userid, title, reward, recruitCount, content, endDate -> check and fill request body
-
     const { title, reward, recruitCount, content, date, time } = missionValues;
     if (!checkUndefine(title, reward, recruitCount, content, date, time)) {
-      // const endDate = mergeDateTime(missionValues.date, missionValues.time);
       const reqBody = {
         userId: userid,
         title: missionValues.title,

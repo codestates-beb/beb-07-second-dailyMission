@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 
-export const mission = atom({
-  key: "mission",
-  default: 1,
+export const missionDetailState = atom({
+  key: "missionDetailState",
+  default: {},
 });
