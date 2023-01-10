@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Form, FormGroup, Label, Col, Input, Button, Row } from "reactstrap";
 import { mergeDateTime, checkUndefine } from "../../utils/utils.js";
 import apiUrl from "../../utils/api";
@@ -9,6 +10,7 @@ import { dateFormatter } from "../../utils/dateFormatter";
 
 const MissionInfo = ({ isWriting }) => {
   const userid = "test3";
+  const navigate = useNavigate();
   const missionDetail = useRecoilValue(missionDetailState);
   const [missionValues, setMissionValues] = useState(
     isWriting ? {} : missionDetail
@@ -43,9 +45,10 @@ const MissionInfo = ({ isWriting }) => {
         endDate: mergeDateTime(missionValues.date, missionValues.time),
       };
       console.log(reqBody);
-      axios
-        .post(`${apiUrl}newmission`, reqBody)
-        .then((res) => console.log(res));
+      axios.post(`${apiUrl}newmission`, reqBody).then((res) => {
+        console.log(res);
+        navigate("/");
+      });
     } else {
       console.log("missing arg");
     }
