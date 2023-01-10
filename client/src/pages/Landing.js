@@ -1,23 +1,28 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import apiUrl from "../utils/api";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import apiUrl from '../utils/api';
 
-import Mission from "../components/landing/mission";
+import Mission from '../components/landing/mission';
 
-import "./Landing.css";
-import { Link } from "react-router-dom";
+import './Landing.css';
 
-import { useRecoilState } from "recoil";
-import { status } from "../status/store";
+import { useRecoilState } from 'recoil';
+import { status } from '../status/store';
+
+import isSigned from '../status/isSigned';
+import {
+  UNSAFE_enhanceManualRouteObjects,
+  useNavigate,
+} from 'react-router-dom';
 
 const Landing = () => {
   const [signStatus, setSignStatus] = useRecoilState(status);
   const [missions, setMissions] = useState([]);
   const [curPage, setPage] = useState(0);
+  const navigate = useNavigate();
   const getMissions = () => {
     axios.get(`${apiUrl}/missions`).then((e) => {
-      e.data.status === "success"
+      e.data.status === 'success'
         ? setMissions(e.data.message)
         : setMissions([]);
     });
@@ -31,28 +36,20 @@ const Landing = () => {
     if (Math.floor(curPage / 10) === 0) return;
     else setPage(curPage - 10);
   };
+
+  const newMissionClickHandler = () => {
+    if (signStatus.isSigned) navigate('/newmission');
+    else alert('You have to sign up to create a new mission!');
+  };
   useEffect(() => {
     getMissions();
-    console.log(missions);
+    const userData = isSigned();
+    if (userData.isSigned) setSignStatus(() => userData);
   }, []);
-
-  const settingSignStatus = () => {
-    setSignStatus((status) => {
-      return { userId: "asdf", isSigned: true };
-    });
-  };
-  const navigate = useNavigate();
-  const navigatetomypage = () => {
-    navigate("/mypage");
-  };
 
   return (
     <div align="center">
       <div className="Landing">
-        <div>This is Landing</div>
-        <div>{signStatus.userId}</div>
-        <button onClick={settingSignStatus}>login</button>
-        <button onClick={navigatetomypage}>mypage</button>
         <div className="buttonContainer">
           <button className="prevPage" onClick={prevPage}>
             prev page
@@ -64,7 +61,9 @@ const Landing = () => {
           <button className="nextPage" onClick={nextPage}>
             next page
           </button>
-          <button className="newMission">new mission</button>
+          <button className="newMission" onClick={newMissionClickHandler}>
+            new mission
+          </button>
         </div>
         <div className="missionHeader">
           <div>ID</div>
@@ -82,7 +81,7 @@ const Landing = () => {
               return <Mission key={missions.indexOf(e)} message={e} />;
             })
           ) : (
-            <div className="noMissions">No missions</div>
+            <div className="noMissions">There is no pending missions</div>
           )}
         </div>
       </div>
