@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import apiUrl from "../../utils/api";
 import "./mission.css";
-import { Link } from "react-router-dom";
 import { dateFormatter } from "../../utils/dateFormatter";
 import { useRecoilState } from "recoil";
 import { missionDetailState } from "../../status/mission";
@@ -36,11 +35,9 @@ const Mission = (props) => {
       <div className="id">{mission.id}</div>
       <div className="recruitCount">{mission.recruitCount}</div>
       <div className="reward">{mission.reward} IT</div>
-      <Link to={`/missiondetail?missionid${mission.id}`}>
-        <div className="title" onClick={handleMissionClick}>
-          {mission.title} ({selectedComments}/{comments.length})
-        </div>
-      </Link>
+      <div className="title" onClick={handleMissionClick}>
+        {mission.title} ({selectedComments}/{comments.length})
+      </div>
       <div className="author">{mission.userId}</div>
       <div className="createdAt">{dateFormatter(mission.createdAt)}</div>
       <div className="endAt">{dateFormatter(mission.endDate)}</div>
