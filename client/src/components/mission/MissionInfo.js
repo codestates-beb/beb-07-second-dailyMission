@@ -9,19 +9,13 @@ import { useRecoilValue } from "recoil";
 import { dateFormatter } from "../../utils/dateFormatter";
 
 const MissionInfo = ({ isWriting }) => {
-  const userid = "test3";
+  const userid = JSON.parse(sessionStorage.getItem("signData"))["userId"];
   const navigate = useNavigate();
   const missionDetail = useRecoilValue(missionDetailState);
   const [missionValues, setMissionValues] = useState(
     isWriting ? {} : missionDetail
   );
-  const handleChange = (e) => {
-    setMissionValues({
-      ...missionValues,
-      [e.target.name]: e.target.value,
-    });
-    console.log(missionValues);
-  };
+
   useEffect(() => {
     if (!isWriting) {
       const [date, time] = dateFormatter(missionValues.endDate).split(" ");
@@ -33,6 +27,15 @@ const MissionInfo = ({ isWriting }) => {
       });
     }
   }, []);
+
+  const handleChange = (e) => {
+    setMissionValues({
+      ...missionValues,
+      [e.target.name]: e.target.value,
+    });
+    console.log(missionValues);
+  };
+
   const handleSubmit = (e) => {
     const { title, reward, recruitCount, content, date, time } = missionValues;
     if (!checkUndefine(title, reward, recruitCount, content, date, time)) {
