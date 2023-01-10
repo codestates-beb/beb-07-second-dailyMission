@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, FormGroup, Label, Col, Input, Button, Row } from "reactstrap";
+import { Form, FormGroup, Col, Input, Button, Row } from "reactstrap";
 import { mergeDateTime, checkUndefine } from "../../utils/utils.js";
 
 const CommentInfo = () => {

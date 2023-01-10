@@ -21,10 +21,10 @@ const web = getWeb3(LOCAL_RPC_SERVER_NETWORK, LOCAL_RPC_SERVER_PORT);
 const tokenContract = getContract(web, ERC20abi, CONTRACT_ADDRESS);
 
 (async () => {
-  // const wallet = await createWallet("password");
-  // console.log(wallet);
-  // const wallet2 = await createWallet("password2");
-  // console.log(wallet2);
+  const wallet = await createWallet("password");
+  console.log(wallet);
+  const wallet2 = await createWallet("qwerty0901");
+  console.log(wallet2);
   // const bal = await tokenBalance(user2Addr);
   // const eth = await ethBalance(user2Addr);
   // console.log(bal, eth);
