@@ -12,17 +12,11 @@ const SignUp = () => {
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
-
     const [idMessage, setIdMessage] = useState("");
     const [nameMessage, setNameMessage] = useState("");
     const [passwordMessage, setPasswordMessage] = useState("");
     const [passwordConfirmMessage, setPasswordConfirmMessage] =
         useState("");
-
-    const [isId, setIsId] = useState(false);
-    const [isname, setIsName] = useState(false);
-    const [isPassword, setIsPassword] = useState(false);
-    const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
 
     const onChangeId = (e) => {
         const currentId = e.target.value;
@@ -30,24 +24,18 @@ const SignUp = () => {
         const idRegExp = /^[ㄱ-ㅎ가-힣a-zA-z0-9]{4,12}$/;
         if (!idRegExp.test(currentId)) {
             setIdMessage("4-12 글자 사이 대소문자 또는 숫자만 입력 가능합니다.");
-            setIsId(false);
         } else {
             setIdMessage("");
-            setIsId(true);
         }
     };
-
 
     const onChangeName = (e) => {
         const currentName = e.target.value;
         setName(currentName);
-
         if (currentName.length < 2) {
             setNameMessage("닉네임은 2글자 이상 입력해주세요.");
-            setIsName(false);
         } else {
             setNameMessage("");
-            setIsName(true);
         }
     };
 
@@ -60,21 +48,18 @@ const SignUp = () => {
             setPasswordMessage(
                 "숫자+영문자+특수문자 조합으로 8자리 이상의 비밀번호만 사용 가능합니다."
             );
-            setIsPassword(false);
         } else {
             setPasswordMessage("");
-            setIsPassword(true);
         }
     };
+
     const onChangePasswordConfirm = (e) => {
         const currentPasswordConfirm = e.target.value;
         setPasswordConfirm(currentPasswordConfirm);
         if (password !== currentPasswordConfirm) {
             setPasswordConfirmMessage("비밀번호가 일치하지 않습니다.");
-            setIsPasswordConfirm(false);
         } else {
             setPasswordConfirmMessage("");
-            setIsPasswordConfirm(true);
         }
     };
 
