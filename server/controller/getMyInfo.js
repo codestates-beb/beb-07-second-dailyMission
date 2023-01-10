@@ -58,7 +58,7 @@ module.exports = {
           mission: myMission,
           comment: myComment,
           banlance: myBalance,
-          NFT: myNFTs,
+          nft: myNFTs,
         },
       });
     }

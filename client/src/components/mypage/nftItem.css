@@ -1,0 +1,14 @@
+.itemContainer{
+  margin : 10px;
+  display: grid;
+  grid-template-rows: auto;
+  border-style:solid;
+}
+.tokenId{
+  grid-row:1/2;
+}
+.image{
+  grid-row:2/3;
+  width: 100%;
+  height: 100%;
+}
