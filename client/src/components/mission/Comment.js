@@ -1,15 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { Card, CardBody, Button, CardText, ListGroupItem } from "reactstrap";
+import { Card, CardBody, Button, CardText } from "reactstrap";
 import { IpfsImage } from "react-ipfs-image";
 import axios from "axios";
 import apiUrl from "../../utils/api";
-// const missionDetail = useRecoilValue(missionDetailState);
+import signData from "../../status/isSigned";
+import { missionDetailState } from "../../status/mission";
+import { useRecoilValue } from "recoil";
 
 const Comment = ({ comment }) => {
+  const missionDetail = useRecoilValue(missionDetailState);
   const [isSelected, setIsSelected] = useState(comment.isSelected);
+  const [isSinged, setIsSigned] = useState(false);
+  const [isWriter, setIsWriter] = useState(false);
   useEffect(() => {
-    console.log(comment);
-  }, []);
+    setIsSigned(() => signData());
+    if (
+      isSinged &&
+      missionDetail.userId ===
+        JSON.parse(sessionStorage.getItem("signData"))["userId"]
+    ) {
+      setIsWriter(true);
+    }
+  });
 
   const onSelectClick = (e) => {
     axios
@@ -23,7 +35,7 @@ const Comment = ({ comment }) => {
         }
       });
   };
-  const onImageClick = (e) => {};
+
   return (
     <div key={`${comment.middionId}-${comment.id}`}>
       <Card>
@@ -34,7 +46,6 @@ const Comment = ({ comment }) => {
           }}
           top
           width="100%"
-          onClick={onImageClick}
         />
         <CardBody>
           <CardText>{comment.content}</CardText>
@@ -43,8 +54,10 @@ const Comment = ({ comment }) => {
           </CardText>
           {isSelected ? (
             <Button disabled>Selected</Button>
-          ) : (
+          ) : isWriter ? (
             <Button onClick={onSelectClick}>Select</Button>
+          ) : (
+            ""
           )}
         </CardBody>
       </Card>
