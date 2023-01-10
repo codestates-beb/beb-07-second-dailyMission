@@ -6,36 +6,45 @@ import LoginModal from './LoginModal';
 import './Header.css';
 
 const Header = () => {
-  const [signStatus, setSignStatus] = useRecoilState(status);
-  const [modalOpen, setModalOpen] = useState(false);
+    const [signStatus, setSignStatus] = useRecoilState(status);
+    const [modalOpen, setModalOpen] = useState(false);
 
-  const openModal = () => {
-    setModalOpen(true);
-  };
-  const closeModal = () => {
-    setModalOpen(false);
-  };
+    const openModal = () => {
+        setModalOpen(true);
+    };
+    const closeModal = () => {
+        setModalOpen(false);
+    };
 
-  return (
-    <div align="center">
-      <div className="header">
-        <Link to="/">
-          <img src="/assets/logo.png" />{' '}
-        </Link>
-        {signStatus.userId === 'unknown' ? (
-          <button onClick={openModal}>sign in</button>
-        ) : (
-          <div>{signStatus.userName}님 안녕하세요!</div>
-        )}
-        <LoginModal open={modalOpen} close={closeModal}>
-          {' '}
-        </LoginModal>
-        <Link to="/signup">
-          <button>sign up</button>
-        </Link>
-      </div>
-    </div>
-  );
+    const signOut = () => {
+        sessionStorage.clear();
+        localStorage.clear();
+        document.location.href = '/'
+    }
+
+    return (
+        <div align="center">
+            <div className="header">
+                <Link to="/">
+                    <img src="/assets/logo.png" />{' '}
+                </Link>
+                {signStatus.isSigned === false ? (
+                    <button onClick={openModal}>sign in</button>
+                ) : (
+                    <Link to="/mypage">{signStatus.userName}</Link>
+                )}
+                <LoginModal open={modalOpen} close={closeModal}>
+                    {' '}
+                </LoginModal>
+                {signStatus.isSigned === true ?
+                    (<button onClick={signOut}>sign out</button>) :
+                    (<Link to="/signup">
+                        <button>sign up</button>
+                    </Link>)}
+
+            </div>
+        </div>
+    );
 };
 
 export default Header;
