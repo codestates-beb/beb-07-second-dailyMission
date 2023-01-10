@@ -1,40 +1,32 @@
-import { useRecoilValue } from "recoil";
-import React, { useEffect, useState } from "react";
-import {
-  Card,
-  CardImg,
-  CardBody,
-  Row,
-  CardText,
-  ListGroupItem,
-} from "reactstrap";
-
+import React from "react";
+import { Card, CardBody, Button, CardText, ListGroupItem } from "reactstrap";
+import { IpfsImage } from "react-ipfs-image";
 // const missionDetail = useRecoilValue(missionDetailState);
 
 const Comment = ({ comment }) => {
-  console.log(comment);
+  const onSelectClick = (e) => {
+    console.log(comment.id);
+  };
+  const onImageClick = (e) => {};
   return (
-    <ListGroupItem key={comment.id}>
-      <Card className="my-2">
-        <CardImg
-          alt="Card image cap"
-          src="https://picsum.photos/900/180"
-          style={{
-            height: 180,
-          }}
-          top
-          width="100%"
-        />
-        <CardBody>
-          <Row>
-            <CardText>{comment.content}</CardText>
-            <CardText>
-              <small className="text-muted">{comment.userId}</small>
-            </CardText>
-          </Row>
-        </CardBody>
-      </Card>
-    </ListGroupItem>
+    <Card key={`${comment.middionId}-${comment.id}`}>
+      <IpfsImage
+        hash={comment.ipfsHash}
+        style={{
+          height: 300,
+        }}
+        top
+        width="100%"
+        onClick={onImageClick}
+      />
+      <CardBody>
+        <CardText>{comment.content}</CardText>
+        <CardText>
+          <small className="text-muted">{comment.userId}</small>
+        </CardText>
+        <Button onClick={onSelectClick}>Select</Button>
+      </CardBody>
+    </Card>
   );
 };
 

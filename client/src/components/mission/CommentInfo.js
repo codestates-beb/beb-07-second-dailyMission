@@ -3,6 +3,10 @@ import { Form, FormGroup, Col, Input, Button, Row } from "reactstrap";
 import { mergeDateTime, checkUndefine } from "../../utils/utils.js";
 
 const CommentInfo = () => {
+<<<<<<< HEAD
+=======
+  //   isWriting = true;
+>>>>>>> e872309 (fix : link btwn landing and newMission)
   const mission = {};
   const [commentValues, setCommentValues] = useState(mission);
   const handleChange = (e) => {
