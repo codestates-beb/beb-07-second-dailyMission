@@ -1,5 +1,23 @@
-.missionHeader{
+.Landing{
   display: grid;
-  width : 900px;
+  grid-template-rows: auto;
+  width: 900px;
+}
+.buttonContainer{
+  margin : 20px;
+  display: grid;
+  grid-template-columns: 1fr 0.2fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  gap: 20px;
+  align-items: center;
+}
+.missionHeader{
+  margin : 8px;
+  display: grid;
   grid-template-columns: 1fr 1fr 1.5fr 13fr 2.5fr 5fr;
+  align-items: center;
+  gap:3px;
+}
+
+.newMission{
+  grid-column: 7/9;
 }
