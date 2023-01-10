@@ -85,7 +85,6 @@ const SignUp = () => {
             userName: name,
         })
             .then(res => {
-                console.log(res)
                 if (res.data.message === "Same userId exists") {
                     setIdMessage('사용할 수 없는 아이디 입니다.')
                 } else if (res.data.message === "Same userName exists") {
@@ -100,7 +99,6 @@ const SignUp = () => {
                     };
                     setSignStatus(() => signData)
                     sessionStorage.setItem('signData', JSON.stringify(signData))
-                    console.log(res)
                     document.location.href = '/'
                 }
 
