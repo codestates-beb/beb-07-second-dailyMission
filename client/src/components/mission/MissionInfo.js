@@ -9,7 +9,6 @@ import { useRecoilValue } from "recoil";
 import { dateFormatter } from "../../utils/dateFormatter";
 
 const MissionInfo = ({ isWriting }) => {
-  const userid = JSON.parse(sessionStorage.getItem("signData"))["userId"];
   const navigate = useNavigate();
   const missionDetail = useRecoilValue(missionDetailState);
   const [missionValues, setMissionValues] = useState(
@@ -38,6 +37,7 @@ const MissionInfo = ({ isWriting }) => {
 
   const handleSubmit = (e) => {
     const { title, reward, recruitCount, content, date, time } = missionValues;
+    const userid = JSON.parse(sessionStorage.getItem("signData"))["userId"];
     if (!checkUndefine(title, reward, recruitCount, content, date, time)) {
       const reqBody = {
         userId: userid,
