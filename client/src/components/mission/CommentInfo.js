@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, FormGroup, Col, Input, Button, Row } from "reactstrap";
 import { mergeDateTime, checkUndefine } from "../../utils/utils.js";
 import { missionDetailState } from "../../status/mission";
 import { useRecoilValue } from "recoil";
+import signData from "../../status/isSigned";
 // import { ImageUpload } from "react-ipfs-uploader";
 
 const CommentInfo = () => {
@@ -21,6 +22,9 @@ const CommentInfo = () => {
     REACT_APP_API_KEY,
     REACT_APP_PROJECT_ID,
   } = process.env;
+  const projectId = process.env.REACT_APP_PROJECT_ID;
+  const projectAPIKey = process.env.REACT_APP_API_KEY;
+  const authorization = "Basic " + btoa(projectId + ":" + projectAPIKey);
   // uploading + hashing data
   const uploadIpfs = () => {
     return false;
@@ -30,7 +34,6 @@ const CommentInfo = () => {
     // upload file on ipfs
     const { content, file } = commentValues;
     if (!checkUndefine(content, file)) {
-      console.log(REACT_APP_IPFS_API_ENDPOINT);
       const ipfsHash = uploadIpfs(file);
       if (ipfsHash) {
         const requestBody = {
@@ -47,7 +50,10 @@ const CommentInfo = () => {
 
     // login status에 따라 submit button disabled
   };
-  const isSinged = JSON.parse(sessionStorage.getItem("signData"))["isSigned"];
+  const [isSinged, setIsSigned] = useState(false);
+  useEffect(() => {
+    setIsSigned(() => signData());
+  }, []);
 
   return (
     <div>
