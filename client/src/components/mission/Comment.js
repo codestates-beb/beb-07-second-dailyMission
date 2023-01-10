@@ -3,7 +3,6 @@ import { Card, CardBody, Button, CardText, ListGroupItem } from "reactstrap";
 import { IpfsImage } from "react-ipfs-image";
 import axios from "axios";
 import apiUrl from "../../utils/api";
-// const missionDetail = useRecoilValue(missionDetailState);
 
 const Comment = ({ comment }) => {
   const [isSelected, setIsSelected] = useState(comment.isSelected);

@@ -13,11 +13,15 @@ const MissionDetail = ({ isWriting }) => {
   const missionDetail = useRecoilValue(missionDetailState);
   const comments = missionDetail.comments;
 
-  const writeMission = <MissionInfo isWriting={isWriting} />;
+  const writeMission = (
+    <div>
+      <MissionInfo isWriting={isWriting} />
+    </div>
+  );
   const showMission = (
     <div>
       <MissionInfo isWriting={isWriting} />
-      <CommentInfo isWriting={isWriting} />
+      <CommentInfo />
       {comments.length !== 0 ? (
         <CardGroup>
           {comments.map((comment) => (

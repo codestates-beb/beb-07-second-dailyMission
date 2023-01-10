@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { Form, FormGroup, Col, Input, Button, Row } from "reactstrap";
 import { mergeDateTime, checkUndefine } from "../../utils/utils.js";
+import { missionDetailState } from "../../status/mission";
+import { useRecoilValue } from "recoil";
 
 const CommentInfo = () => {
-  const mission = {};
-  const [commentValues, setCommentValues] = useState(mission);
+  const [commentValues, setCommentValues] = useState({});
+  const missionDetail = useRecoilValue(missionDetailState);
   const handleChange = (e) => {
     setCommentValues({
       ...commentValues,
@@ -13,14 +15,17 @@ const CommentInfo = () => {
     console.log(commentValues);
   };
 
+  // uploading + hashing data
+  const uploadIpfs = (file) => {};
+
   const handleSubmit = (e) => {
     // upload file on ipfs
     const { content, file } = commentValues;
     if (!checkUndefine(content, file)) {
-      const ipfsHash = commentValues.file;
+      const ipfsHash = uploadIpfs(commentValues.file);
       const requestBody = {
-        missionid: "",
-        userid: "",
+        missionid: missionDetail.id,
+        userid: JSON.parse(sessionStorage.getItem("signData"))["userId"],
         content: commentValues.content,
         ipfsHash: ipfsHash,
       };
