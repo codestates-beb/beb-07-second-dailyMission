@@ -10,6 +10,7 @@ function LoginModal(props) {
     const [userId, setUserId] = useState("");
     const [password, setPassword] = useState("");
     const [isChecked, setIsChecked] = useState(false);
+    const [alertMessage, setAlertMessage] = useState("");
     const [signStatus, setSignStatus] = useRecoilState(status);
 
     const onUserIdHandler = (event) => {
@@ -28,7 +29,7 @@ function LoginModal(props) {
         })
             .then(res => {
                 if (res.data.status === 'falied') {
-                    alert('아이디 또는 비밀번호를 잘못 입력했습니다.')
+                    setAlertMessage('잘못된 아이디 또는 패스워드 입니다.')
                 }
                 else if (isChecked === false) {
                     const signData = res.data.message;
@@ -75,7 +76,7 @@ function LoginModal(props) {
                                 SIGN IN
                             </button>
                         </div>
-
+                        <p className="alert-message"> {alertMessage} </p>
                     </main>
                     <footer>
                         <div className="footer-check">
