@@ -131,3 +131,13 @@
     margin-bottom: 0;
     padding-top: 20px;
 }
+
+.footer-message {
+    color: red;
+    text-align: center;
+}
+
+.to-mypage {
+    display: flex;
+    justify-content: center;
+}
