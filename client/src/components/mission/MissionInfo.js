@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, FormGroup, Label, Col, Input, Button, Row } from "reactstrap";
 import { mergeDateTime, checkUndefine } from "../../utils/utils.js";
@@ -8,54 +8,23 @@ import { missionDetailState } from "../../status/mission";
 import { useRecoilValue } from "recoil";
 import { dateFormatter } from "../../utils/dateFormatter";
 
-const MissionInfo = ({ isWriting }) => {
-  const navigate = useNavigate();
+const MissionInfo = ({ isSigned }) => {
   const missionDetail = useRecoilValue(missionDetailState);
-  const [missionValues, setMissionValues] = useState(
-    isWriting ? {} : missionDetail
-  );
+  const [userId, setUserId] = useState("");
+  const [missionValues, setMissionValues] = useState(missionDetail);
 
   useEffect(() => {
-    if (!isWriting) {
-      const [date, time] = dateFormatter(missionValues.endDate).split(" ");
-      setMissionValues((curr) => {
-        const withDateTime = { ...curr };
-        withDateTime.date = "20" + date;
-        withDateTime.time = time;
-        return withDateTime;
-      });
+    if (isSigned) {
+      setUserId(JSON.parse(sessionStorage.getItem("signData"))["userId"]);
     }
-  }, []);
-
-  const handleChange = (e) => {
-    setMissionValues({
-      ...missionValues,
-      [e.target.name]: e.target.value,
+    const [date, time] = dateFormatter(missionValues.endDate).split(" ");
+    setMissionValues((curr) => {
+      const withDateTime = { ...curr };
+      withDateTime.date = "20" + date;
+      withDateTime.time = time;
+      return withDateTime;
     });
-    console.log(missionValues);
-  };
-
-  const handleSubmit = (e) => {
-    const { title, reward, recruitCount, content, date, time } = missionValues;
-    const userid = JSON.parse(sessionStorage.getItem("signData"))["userId"];
-    if (!checkUndefine(title, reward, recruitCount, content, date, time)) {
-      const reqBody = {
-        userId: userid,
-        title: missionValues.title,
-        reward: missionValues.reward,
-        recruitCount: missionValues.recruitCount,
-        content: missionValues.content,
-        endDate: mergeDateTime(missionValues.date, missionValues.time),
-      };
-      console.log(reqBody);
-      axios.post(`${apiUrl}newmission`, reqBody).then((res) => {
-        console.log(res);
-        navigate("/");
-      });
-    } else {
-      console.log("missing arg");
-    }
-  };
+  }, []);
 
   return (
     <div>
@@ -68,10 +37,9 @@ const MissionInfo = ({ isWriting }) => {
             <Input
               name="title"
               bsSize="lg"
-              value={missionValues.title}
+              value={missionValues.title || ""}
               placeholder="write a title"
-              onChange={handleChange}
-              disabled={isWriting ? false : true}
+              disabled={true}
             />
           </Col>
         </FormGroup>
@@ -82,9 +50,8 @@ const MissionInfo = ({ isWriting }) => {
               <Input
                 name="reward"
                 type="number"
-                onChange={handleChange}
-                value={missionValues.reward}
-                disabled={isWriting ? false : true}
+                value={missionValues.reward || ""}
+                disabled={true}
               />
             </FormGroup>
           </Col>
@@ -93,22 +60,9 @@ const MissionInfo = ({ isWriting }) => {
               <Label>Recruit</Label>
               <Input
                 name="recruitCount"
-                type="select"
-                onChange={handleChange}
-                value={missionValues.recruitCount}
-                disabled={isWriting ? false : true}
-              >
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-                <option>6</option>
-                <option>7</option>
-                <option>8</option>
-                <option>9</option>
-                <option>10</option>
-              </Input>
+                value={missionValues.recruitCount || ""}
+                disabled={true}
+              ></Input>
             </FormGroup>
           </Col>
           <Col>
@@ -118,9 +72,8 @@ const MissionInfo = ({ isWriting }) => {
                 name="date"
                 placeholder="date placeholder"
                 type="date"
-                onChange={handleChange}
-                value={missionValues.date}
-                disabled={isWriting ? false : true}
+                value={missionValues.date || ""}
+                disabled={true}
               />
             </FormGroup>
           </Col>
@@ -130,9 +83,8 @@ const MissionInfo = ({ isWriting }) => {
               <Input
                 name="time"
                 type="time"
-                onChange={handleChange}
-                value={missionValues.time}
-                disabled={isWriting ? false : true}
+                value={missionValues.time || ""}
+                disabled={true}
               />
             </FormGroup>
           </Col>
@@ -142,18 +94,10 @@ const MissionInfo = ({ isWriting }) => {
             name="content"
             type="textarea"
             placeholder="Write your mission"
-            onChange={handleChange}
-            value={missionValues.content}
-            disabled={isWriting ? false : true}
+            value={missionValues.content || ""}
+            disabled={true}
           />
         </FormGroup>
-        {isWriting ? (
-          <Button size="lg" onClick={handleSubmit}>
-            Submit
-          </Button>
-        ) : (
-          ""
-        )}
       </Form>
     </div>
   );
