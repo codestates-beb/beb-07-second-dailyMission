@@ -8,8 +8,7 @@ import { missionDetailState } from "../../status/mission";
 import { useRecoilValue } from "recoil";
 import { dateFormatter } from "../../utils/dateFormatter";
 
-const MissionInfo = ({ isSigned, isWriting }) => {
-  const navigate = useNavigate();
+const MissionInfo = ({ isSigned }) => {
   const missionDetail = useRecoilValue(missionDetailState);
   const [userId, setUserId] = useState("");
   const [missionValues, setMissionValues] = useState(missionDetail);
@@ -18,47 +17,14 @@ const MissionInfo = ({ isSigned, isWriting }) => {
     if (isSigned) {
       setUserId(JSON.parse(sessionStorage.getItem("signData"))["userId"]);
     }
-    if (!isWriting) {
-      const [date, time] = dateFormatter(missionValues.endDate).split(" ");
-      setMissionValues((curr) => {
-        const withDateTime = { ...curr };
-        withDateTime.date = "20" + date;
-        withDateTime.time = time;
-        return withDateTime;
-      });
-    } else {
-      setMissionValues({});
-    }
-  }, []);
-
-  const handleChange = (e) => {
-    setMissionValues({
-      ...missionValues,
-      [e.target.name]: e.target.value,
+    const [date, time] = dateFormatter(missionValues.endDate).split(" ");
+    setMissionValues((curr) => {
+      const withDateTime = { ...curr };
+      withDateTime.date = "20" + date;
+      withDateTime.time = time;
+      return withDateTime;
     });
-    console.log(missionValues);
-  };
-
-  const handleSubmit = (e) => {
-    const { title, reward, recruitCount, content, date, time } = missionValues;
-    if (!checkUndefine(title, reward, recruitCount, content, date, time)) {
-      const reqBody = {
-        userId: userId,
-        title: missionValues.title,
-        reward: missionValues.reward,
-        recruitCount: missionValues.recruitCount,
-        content: missionValues.content,
-        endDate: mergeDateTime(missionValues.date, missionValues.time),
-      };
-      console.log(reqBody);
-      axios.post(`${apiUrl}newmission`, reqBody).then((res) => {
-        console.log(res);
-        navigate("/");
-      });
-    } else {
-      console.log("missing arg");
-    }
-  };
+  }, []);
 
   return (
     <div>
@@ -73,8 +39,7 @@ const MissionInfo = ({ isSigned, isWriting }) => {
               bsSize="lg"
               value={missionValues.title || ""}
               placeholder="write a title"
-              onChange={handleChange}
-              disabled={isWriting ? false : true}
+              disabled={true}
             />
           </Col>
         </FormGroup>
@@ -85,9 +50,8 @@ const MissionInfo = ({ isSigned, isWriting }) => {
               <Input
                 name="reward"
                 type="number"
-                onChange={handleChange}
                 value={missionValues.reward || ""}
-                disabled={isWriting ? false : true}
+                disabled={true}
               />
             </FormGroup>
           </Col>
@@ -96,22 +60,9 @@ const MissionInfo = ({ isSigned, isWriting }) => {
               <Label>Recruit</Label>
               <Input
                 name="recruitCount"
-                type="select"
-                onChange={handleChange}
                 value={missionValues.recruitCount || ""}
-                disabled={isWriting ? false : true}
-              >
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-                <option>6</option>
-                <option>7</option>
-                <option>8</option>
-                <option>9</option>
-                <option>10</option>
-              </Input>
+                disabled={true}
+              ></Input>
             </FormGroup>
           </Col>
           <Col>
@@ -121,9 +72,8 @@ const MissionInfo = ({ isSigned, isWriting }) => {
                 name="date"
                 placeholder="date placeholder"
                 type="date"
-                onChange={handleChange}
                 value={missionValues.date || ""}
-                disabled={isWriting ? false : true}
+                disabled={true}
               />
             </FormGroup>
           </Col>
@@ -133,9 +83,8 @@ const MissionInfo = ({ isSigned, isWriting }) => {
               <Input
                 name="time"
                 type="time"
-                onChange={handleChange}
                 value={missionValues.time || ""}
-                disabled={isWriting ? false : true}
+                disabled={true}
               />
             </FormGroup>
           </Col>
@@ -145,18 +94,10 @@ const MissionInfo = ({ isSigned, isWriting }) => {
             name="content"
             type="textarea"
             placeholder="Write your mission"
-            onChange={handleChange}
             value={missionValues.content || ""}
-            disabled={isWriting ? false : true}
+            disabled={true}
           />
         </FormGroup>
-        {isWriting ? (
-          <Button size="lg" onClick={handleSubmit}>
-            Submit
-          </Button>
-        ) : (
-          ""
-        )}
       </Form>
     </div>
   );
