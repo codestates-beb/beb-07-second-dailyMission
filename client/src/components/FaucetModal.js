@@ -17,8 +17,11 @@ function LoginModal(props) {
     const options = selectFaucet.map((faucet) => {
         return <option value={faucet}>{faucet}</option>
     })
+
     const handleFaucet = (event) => {
         setChoice(event.target.value)
+        setAlertMessage("");
+        setFaucetStatus(false);
     };
 
     const onClickFaucet = () => {
