@@ -63,7 +63,6 @@ const Mypage = () => {
         window.location.reload();
       });
   };
-  console.log(userInfo);
   return (
     <div align="center">
       <div className="mypage">
