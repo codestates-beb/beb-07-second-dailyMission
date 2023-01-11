@@ -60,6 +60,10 @@ const Header = () => {
                                         </Link>
                                     </li>
                                     <li className='drop-down'>
+                                        <Link to="/mint">NFT 만들기
+                                        </Link>
+                                    </li>
+                                    <li className='drop-down'>
                                         <button onClick={signOut}>로그아웃
                                         </button></li>
 
