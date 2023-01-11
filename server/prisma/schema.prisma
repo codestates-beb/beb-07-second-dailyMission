@@ -11,9 +11,9 @@ datasource db {
 }
 
 model User {
-  userId     String @id
+  userId     String  @id
   password   String
-  userName   String @unique
+  userName   String  @unique
   address    String
   lastFaucet String?
 }
@@ -40,3 +40,6 @@ model Comment {
   isSelected Boolean @default(false)
 }
 
+model NFT {
+  tokenId Int @id
+}

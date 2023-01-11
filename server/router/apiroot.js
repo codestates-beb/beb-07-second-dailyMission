@@ -17,6 +17,7 @@ const tokenTransfer = require('../controller/transferToken');
 const devRouter = require('../controller/dev/devRouter');
 const { getFaucet, getLastFaucet } = require('../controller/faucetController');
 const mintNFT = require('../controller/mintNFT');
+const transferTokenToServer = require('../controller/transferTokenToServer');
 
 router.get('/', (req, res) => {
   res.redirect('https://documenter.getpostman.com/view/3535243/2s8Z75RUrG');
@@ -28,6 +29,7 @@ router.post('/newmission', newMission);
 router.post('/newcomment', newComment);
 
 router.post('/transfertoken', tokenTransfer);
+router.post('/transfertokentoserver', transferTokenToServer);
 
 router.post('/selcomment', selComment);
 router.get('/address/:address', checkWallet);
