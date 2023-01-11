@@ -3,25 +3,22 @@ import { Card, CardBody, Button, CardText } from "reactstrap";
 import { IpfsImage } from "react-ipfs-image";
 import axios from "axios";
 import apiUrl from "../../utils/api";
-import signData from "../../status/isSigned";
 import { missionDetailState } from "../../status/mission";
 import { useRecoilValue } from "recoil";
 
-const Comment = ({ comment }) => {
+const Comment = ({ isSigned, comment }) => {
   const missionDetail = useRecoilValue(missionDetailState);
   const [isSelected, setIsSelected] = useState(comment.isSelected);
-  const [isSinged, setIsSigned] = useState(false);
   const [isWriter, setIsWriter] = useState(false);
   useEffect(() => {
-    setIsSigned(() => signData());
     if (
-      isSinged &&
+      isSigned &&
       missionDetail.userId ===
         JSON.parse(sessionStorage.getItem("signData"))["userId"]
     ) {
       setIsWriter(true);
     }
-  });
+  }, [missionDetail]);
 
   const onSelectClick = (e) => {
     axios
@@ -38,7 +35,7 @@ const Comment = ({ comment }) => {
 
   return (
     <div key={`${comment.middionId}-${comment.id}`}>
-      <Card>
+      <Card key={`${comment.middionId}-${comment.id}`}>
         <IpfsImage
           hash={comment.ipfsHash}
           style={{

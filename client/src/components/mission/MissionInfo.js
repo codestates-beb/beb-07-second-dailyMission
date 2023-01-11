@@ -8,14 +8,18 @@ import { missionDetailState } from "../../status/mission";
 import { useRecoilValue } from "recoil";
 import { dateFormatter } from "../../utils/dateFormatter";
 
-const MissionInfo = ({ isWriting }) => {
+const MissionInfo = ({ isSigned, isWriting }) => {
   const navigate = useNavigate();
   const missionDetail = useRecoilValue(missionDetailState);
+  const [userId, setUserId] = useState("");
   const [missionValues, setMissionValues] = useState(
     isWriting ? {} : missionDetail
   );
 
   useEffect(() => {
+    if (isSigned) {
+      setUserId(JSON.parse(sessionStorage.getItem("signData"))["userId"]);
+    }
     if (!isWriting) {
       const [date, time] = dateFormatter(missionValues.endDate).split(" ");
       setMissionValues((curr) => {
@@ -25,7 +29,7 @@ const MissionInfo = ({ isWriting }) => {
         return withDateTime;
       });
     }
-  }, []);
+  }, [isSigned, isWriting, missionValues]);
 
   const handleChange = (e) => {
     setMissionValues({
@@ -37,10 +41,9 @@ const MissionInfo = ({ isWriting }) => {
 
   const handleSubmit = (e) => {
     const { title, reward, recruitCount, content, date, time } = missionValues;
-    const userid = JSON.parse(sessionStorage.getItem("signData"))["userId"];
     if (!checkUndefine(title, reward, recruitCount, content, date, time)) {
       const reqBody = {
-        userId: userid,
+        userId: userId,
         title: missionValues.title,
         reward: missionValues.reward,
         recruitCount: missionValues.recruitCount,

@@ -3,10 +3,10 @@ import { Form, FormGroup, Col, Input, Button, Row } from "reactstrap";
 import { mergeDateTime, checkUndefine } from "../../utils/utils.js";
 import { missionDetailState } from "../../status/mission";
 import { useRecoilValue } from "recoil";
-import signData from "../../status/isSigned";
+import { create as ipfsHttpClient } from "ipfs-http-client";
 // import { ImageUpload } from "react-ipfs-uploader";
 
-const CommentInfo = () => {
+const CommentInfo = ({ isSigned }) => {
   const [commentValues, setCommentValues] = useState({});
   const missionDetail = useRecoilValue(missionDetailState);
   const handleChange = (e) => {
@@ -14,7 +14,6 @@ const CommentInfo = () => {
       ...commentValues,
       [e.target.name]: e.target.value,
     });
-    console.log(commentValues);
   };
 
   const {
@@ -25,8 +24,15 @@ const CommentInfo = () => {
   const projectId = process.env.REACT_APP_PROJECT_ID;
   const projectAPIKey = process.env.REACT_APP_API_KEY;
   const authorization = "Basic " + btoa(projectId + ":" + projectAPIKey);
+  const [uploadedImage, setUploadedImage] = useState();
+  const ipfs = ipfsHttpClient({
+    url: "https://ipfs.infura.io:5001/api/v0",
+    headers: {
+      authorization,
+    },
+  });
   // uploading + hashing data
-  const uploadIpfs = () => {
+  const uploadIpfs = async () => {
     return false;
   };
 
@@ -50,10 +56,7 @@ const CommentInfo = () => {
 
     // login status에 따라 submit button disabled
   };
-  const [isSinged, setIsSigned] = useState(false);
-  useEffect(() => {
-    setIsSigned(() => signData());
-  }, []);
+  // useEffect(() => {}, []);
 
   return (
     <div>
@@ -79,7 +82,7 @@ const CommentInfo = () => {
             </a> */}
           </Col>
           <Col sm={2}>
-            <Button size="lg" onClick={handleSubmit} disabled={!isSinged}>
+            <Button size="lg" onClick={handleSubmit} disabled={!isSigned}>
               Submit
             </Button>
           </Col>
