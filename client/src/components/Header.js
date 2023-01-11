@@ -8,15 +8,24 @@ import './Header.css';
 
 const Header = () => {
     const [signStatus, setSignStatus] = useRecoilState(status);
-    const [modalOpen, setModalOpen] = useState(false);
+    const [loginModalOpen, setLoginModalOpen] = useState(false);
+    const [faucetModalOpen, setFaucetModalOpen] = useState(false);
     const [view, setView] = useState(false);
 
-    const openModal = () => {
-        setModalOpen(true);
+    const openLoginModal = () => {
+        setLoginModalOpen(true);
     };
-    const closeModal = () => {
-        setModalOpen(false);
+    const closeLoginModal = () => {
+        setLoginModalOpen(false);
     };
+
+    const openFaucetModal = () => {
+        setFaucetModalOpen(true);
+    }
+
+    const closeFaucetModal = () => {
+        setFaucetModalOpen(false);
+    }
 
     const signOut = () => {
         sessionStorage.clear();
@@ -31,8 +40,8 @@ const Header = () => {
                     <img className='logo' src="/assets/logo.png" />{' '}
                 </Link>
                 {signStatus.isSigned === false ? (
-                    <><button onClick={openModal}>sign in</button>
-                        <LoginModal open={modalOpen} close={closeModal}>
+                    <><button onClick={openLoginModal}>sign in</button>
+                        <LoginModal open={loginModalOpen} close={closeLoginModal}>
                             {' '}
                         </LoginModal>
                         <Link to="/signup">
@@ -57,8 +66,8 @@ const Header = () => {
 
                                 </div>}
                         </ul>
-                        <button onClick={openModal}>faucet</button>
-                        <FaucetModal open={modalOpen} close={closeModal}>
+                        <button onClick={openFaucetModal}>faucet</button>
+                        <FaucetModal open={faucetModalOpen} close={closeFaucetModal}>
                             {' '}
                         </FaucetModal>
                     </div>
