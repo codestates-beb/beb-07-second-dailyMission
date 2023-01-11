@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./LoginModal.css";
+import "./Modal.css";
 import apiUrl from "../utils/api";
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
