@@ -38,6 +38,7 @@ const mintNFT = async (req, res) => {
     await contract.methods
       .mintNFT(tokenUri, body.address)
       .send({ from: serverAddress, gas: 4712388 });
+    await mint(notMintedIds[randNum]);
     return res.status(201).send({ status: 'Success', message: tokenUri });
   } catch (e) {
     return res.status(204).send({ status: 'Fail', message: 'Mint failed' });
