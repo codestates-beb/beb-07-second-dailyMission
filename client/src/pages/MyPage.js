@@ -6,6 +6,8 @@ import { useRecoilState } from 'recoil';
 import { status } from '../status/store';
 import signData from '../status/isSigned';
 import NFTComp from '../components/mypage/nftItem';
+import MissionComp from '../components/mypage/mission';
+import CommentComp from '../components/mypage/comment';
 import web3Data from './web3';
 import Web3 from 'web3';
 
@@ -61,7 +63,7 @@ const Mypage = () => {
         window.location.reload();
       });
   };
-
+  console.log(userInfo);
   return (
     <div align="center">
       <div className="mypage">
@@ -81,7 +83,7 @@ const Mypage = () => {
               tokenBlance :
               {typeof userInfo === 'undefined' ? 0 : userInfo.banlance}
             </div>
-            <div className="etherBalance">etherBalance : {ethBalance}</div>
+            <div className="etherBalance">etherBalance : {ethBalance} ETH</div>
           </div>
           <div className="transferToken">
             <input
@@ -102,15 +104,49 @@ const Mypage = () => {
           </div>
         </div>
         <div className="myStuffs">
-          <div className="myMissions">myMissions</div>
-          <div className="myComments">myComments</div>
+          <div className="myMissions">
+            <div className="missionTitleContainer">
+              <div className="mymissionstitle">MyMissions</div>
+              <div>ID</div>
+              <div>Title</div>
+              <div>Complete</div>
+            </div>
+            <div>
+              {typeof userInfo !== 'undefined'
+                ? userInfo.mission.length === 0
+                  ? `No Missions`
+                  : userInfo.mission.map((e) => (
+                      <MissionComp key={userInfo.mission.indexOf(e)} data={e} />
+                    ))
+                : `no data`}
+            </div>
+          </div>
+          <div className="myComments">
+            <div className="commentTitleContainer">
+              <div className="mycommentstitle">MyComments</div>
+              <div>missionID</div>
+              <div>Content</div>
+              <div>Complete</div>
+            </div>
+            <div>
+              {typeof userInfo !== 'undefined'
+                ? userInfo.comment.length === 0
+                  ? `No Comments`
+                  : userInfo.comment.map((e) => (
+                      <CommentComp key={userInfo.comment.indexOf(e)} data={e} />
+                    ))
+                : `no data`}
+            </div>
+          </div>
           <div className="myNFTs">
             <div>My NFTs</div>
             <div>
               {typeof userInfo !== 'undefined'
                 ? userInfo.nft.length === 0
                   ? `No Items`
-                  : userInfo.nft.map((e) => <NFTComp data={e} />)
+                  : userInfo.nft.map((e) => (
+                      <NFTComp key={userInfo.nft.indexOf(e)} data={e} />
+                    ))
                 : `no data`}
             </div>
           </div>
