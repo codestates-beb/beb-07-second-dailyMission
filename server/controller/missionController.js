@@ -1,9 +1,8 @@
-const prisma = require("../prisma/prisma");
-const { timeFormatted } = require("../utils/utils");
-const { openMission } = require("../utils/transaction");
+const prisma = require('../prisma/prisma');
+const { timeFormatted } = require('../utils/utils');
+const { openMission } = require('../utils/transaction');
 
 const missionFee = 35;
-
 
 module.exports = {
   missions: async (req, res) => {
@@ -80,7 +79,10 @@ module.exports = {
         where: { userId: userId },
       });
       const { address } = userData;
-      const openMissionRes = await openMission(address, reward + missionFee);
+      const openMissionRes = await openMission(
+        address,
+        parseInt(reward) + parseInt(missionFee)
+      );
 
       if (openMissionRes.status) {
         data = {
@@ -97,11 +99,11 @@ module.exports = {
         const newMissionRes = await prisma.mission.create({ data: data });
         return res
           .status(200)
-          .send({ status: "success", message: newMissionRes });
+          .send({ status: 'success', message: newMissionRes });
       } else
         return res
           .status(200)
-          .send({ status: "failed", message: "Failed opening mission" });
+          .send({ status: 'failed', message: 'Failed opening mission' });
     } catch (e) {
       console.log(e);
       return res.status(400).send({ status: 'failed', message: e });
