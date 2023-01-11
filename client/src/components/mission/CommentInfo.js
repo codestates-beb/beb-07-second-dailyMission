@@ -1,92 +1,81 @@
-import React, { useEffect, useState } from "react";
-import { Form, FormGroup, Col, Input, Button, Row } from "reactstrap";
-import { mergeDateTime, checkUndefine } from "../../utils/utils.js";
+import React, { useState } from "react";
+import { Form, FormGroup, Col, Input, Button } from "reactstrap";
+import { checkUndefine } from "../../utils/utils.js";
 import { missionDetailState } from "../../status/mission";
 import { useRecoilValue } from "recoil";
-import { create as ipfsHttpClient } from "ipfs-http-client";
+import IpfsModal from "./IpfsModal.js";
+import axios from "axios";
+import apiUrl from "../../utils/api";
+import { useNavigate } from "react-router-dom";
+
 // import { ImageUpload } from "react-ipfs-uploader";
 
 const CommentInfo = ({ isSigned }) => {
+  const navigate = useNavigate();
   const [commentValues, setCommentValues] = useState({});
   const missionDetail = useRecoilValue(missionDetailState);
+  const [modal, setModal] = useState(false);
+
   const handleChange = (e) => {
     setCommentValues({
       ...commentValues,
       [e.target.name]: e.target.value,
     });
-  };
-
-  const {
-    REACT_APP_IPFS_API_ENDPOINT,
-    REACT_APP_API_KEY,
-    REACT_APP_PROJECT_ID,
-  } = process.env;
-  const projectId = process.env.REACT_APP_PROJECT_ID;
-  const projectAPIKey = process.env.REACT_APP_API_KEY;
-  const authorization = "Basic " + btoa(projectId + ":" + projectAPIKey);
-  const [uploadedImage, setUploadedImage] = useState();
-  const ipfs = ipfsHttpClient({
-    url: "https://ipfs.infura.io:5001/api/v0",
-    headers: {
-      authorization,
-    },
-  });
-  // uploading + hashing data
-  const uploadIpfs = async () => {
-    return false;
+    console.log(commentValues);
   };
 
   const handleSubmit = (e) => {
-    // upload file on ipfs
-    const { content, file } = commentValues;
-    if (!checkUndefine(content, file)) {
-      const ipfsHash = uploadIpfs(file);
+    const { content, ipfsHash } = commentValues;
+    if (!checkUndefine(content)) {
       if (ipfsHash) {
-        const requestBody = {
-          missionid: missionDetail.id,
-          userid: JSON.parse(sessionStorage.getItem("signData"))["userId"],
+        const reqBody = {
+          missionId: missionDetail.id,
+          userId: JSON.parse(sessionStorage.getItem("signData"))["userId"],
           content: content,
           ipfsHash: ipfsHash,
         };
-        console.log(requestBody);
+        axios.post(`${apiUrl}newcomment`, reqBody).then((res) => {
+          if (res.data.status === "success") {
+            navigate("/");
+          } else {
+            alert("Comment Failed");
+          }
+        });
       } else console.log("failed uploading");
     } else {
       console.log("missing arg");
     }
-
-    // login status에 따라 submit button disabled
   };
-  // useEffect(() => {}, []);
+
+  const toggle = () => setModal(!modal);
 
   return (
     <div>
       <Form>
-        <FormGroup>
+        <Col>
+          <FormGroup>
+            <Input
+              name="content"
+              type="textarea"
+              placeholder="Write your answer"
+              onChange={handleChange}
+              value={commentValues.content || ""}
+            />
+          </FormGroup>
           <Input
-            name="content"
-            type="textarea"
-            placeholder="Write your answer"
+            name="ipfsHash"
+            placeholder="Insert copied ipfs hash"
             onChange={handleChange}
-            value={commentValues.content}
+            value={commentValues.ipfsHash || ""}
           />
-        </FormGroup>
-        <Row>
-          <Col sm={10}>
-            <FormGroup>
-              <Input name="file" type="file" onChange={handleChange} />
-            </FormGroup>
-            {/* <ImageUpload setUrl={setImageUrl} /> */}
-            {/* ImageUrl :
-            <a href={imageUrl} target="_blank" rel="noopener noreferrer">
-              {imageUrl}
-            </a> */}
-          </Col>
-          <Col sm={2}>
-            <Button size="lg" onClick={handleSubmit} disabled={!isSigned}>
-              Submit
-            </Button>
-          </Col>
-        </Row>
+          <Button sm={5} size="lg" onClick={toggle} disabled={!isSigned}>
+            Upload file
+          </Button>
+          <IpfsModal isOpen={modal} toggle={toggle} />
+          <Button sm={5} size="lg" onClick={handleSubmit} disabled={!isSigned}>
+            Submit
+          </Button>
+        </Col>
       </Form>
     </div>
   );

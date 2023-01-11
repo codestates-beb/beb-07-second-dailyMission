@@ -40,9 +40,9 @@ const Comment = ({ isSigned, comment }) => {
           hash={comment.ipfsHash}
           style={{
             height: 300,
+            width: 400,
           }}
           top
-          width="100%"
         />
         <CardBody>
           <CardText>{comment.content}</CardText>

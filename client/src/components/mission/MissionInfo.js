@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, FormGroup, Label, Col, Input, Button, Row } from "reactstrap";
 import { mergeDateTime, checkUndefine } from "../../utils/utils.js";
@@ -12,9 +12,7 @@ const MissionInfo = ({ isSigned, isWriting }) => {
   const navigate = useNavigate();
   const missionDetail = useRecoilValue(missionDetailState);
   const [userId, setUserId] = useState("");
-  const [missionValues, setMissionValues] = useState(
-    isWriting ? {} : missionDetail
-  );
+  const [missionValues, setMissionValues] = useState(missionDetail);
 
   useEffect(() => {
     if (isSigned) {
@@ -28,8 +26,10 @@ const MissionInfo = ({ isSigned, isWriting }) => {
         withDateTime.time = time;
         return withDateTime;
       });
+    } else {
+      setMissionValues({});
     }
-  }, [isSigned, isWriting, missionValues]);
+  }, []);
 
   const handleChange = (e) => {
     setMissionValues({
@@ -71,7 +71,7 @@ const MissionInfo = ({ isSigned, isWriting }) => {
             <Input
               name="title"
               bsSize="lg"
-              value={missionValues.title}
+              value={missionValues.title || ""}
               placeholder="write a title"
               onChange={handleChange}
               disabled={isWriting ? false : true}
@@ -86,7 +86,7 @@ const MissionInfo = ({ isSigned, isWriting }) => {
                 name="reward"
                 type="number"
                 onChange={handleChange}
-                value={missionValues.reward}
+                value={missionValues.reward || ""}
                 disabled={isWriting ? false : true}
               />
             </FormGroup>
@@ -98,7 +98,7 @@ const MissionInfo = ({ isSigned, isWriting }) => {
                 name="recruitCount"
                 type="select"
                 onChange={handleChange}
-                value={missionValues.recruitCount}
+                value={missionValues.recruitCount || ""}
                 disabled={isWriting ? false : true}
               >
                 <option>1</option>
@@ -122,7 +122,7 @@ const MissionInfo = ({ isSigned, isWriting }) => {
                 placeholder="date placeholder"
                 type="date"
                 onChange={handleChange}
-                value={missionValues.date}
+                value={missionValues.date || ""}
                 disabled={isWriting ? false : true}
               />
             </FormGroup>
@@ -134,7 +134,7 @@ const MissionInfo = ({ isSigned, isWriting }) => {
                 name="time"
                 type="time"
                 onChange={handleChange}
-                value={missionValues.time}
+                value={missionValues.time || ""}
                 disabled={isWriting ? false : true}
               />
             </FormGroup>
@@ -146,7 +146,7 @@ const MissionInfo = ({ isSigned, isWriting }) => {
             type="textarea"
             placeholder="Write your mission"
             onChange={handleChange}
-            value={missionValues.content}
+            value={missionValues.content || ""}
             disabled={isWriting ? false : true}
           />
         </FormGroup>

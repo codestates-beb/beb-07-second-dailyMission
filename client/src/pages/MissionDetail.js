@@ -10,7 +10,12 @@ const MissionDetail = ({ isWriting }) => {
   // misionid -> missionDetail -> recoil로 mission state 관리 -> 자식 컴포넌츠에서 mission state 가져오기
   const missionDetail = useRecoilValue(missionDetailState);
   const comments = missionDetail.comments;
-  const isSigned = sessionStorage.getItem("signData") ? true : false;
+  const [isSigned, setIsSigned] = useState(false);
+  useEffect(() => {
+    setIsSigned(() => {
+      return sessionStorage.getItem("signData") ? true : false;
+    });
+  }, [isSigned]);
 
   const writeMission = (
     <div>
