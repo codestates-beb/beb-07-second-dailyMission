@@ -8,7 +8,7 @@ import apiUrl from "../utils/api";
 const NewMission = () => {
   const navigate = useNavigate();
   const userId = JSON.parse(sessionStorage.getItem("signData"))["userId"];
-  const [missionValues, setMissionValues] = useState({});
+  const [missionValues, setMissionValues] = useState({ recruitCount: "1" });
 
   const handleChange = (e) => {
     setMissionValues({
