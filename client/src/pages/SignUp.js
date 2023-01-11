@@ -70,6 +70,7 @@ const SignUp = () => {
             userName: name,
         })
             .then(res => {
+
                 if (res.data.message === "Same userId exists") {
                     setIdMessage('사용할 수 없는 아이디 입니다.')
                 } else if (res.data.message === "Same userName exists") {
@@ -78,7 +79,7 @@ const SignUp = () => {
                 else {
                     const signData = {
                         userId: id,
-                        password: password,
+                        address: res.data.message.address,
                         userName: name,
                         isSigned: true,
                     };
