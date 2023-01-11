@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Form, FormGroup, Label, Col, Input, Button, Row } from "reactstrap";
 import { mergeDateTime, checkUndefine } from "../../utils/utils.js";
 import apiUrl from "../../utils/api";
@@ -8,18 +9,12 @@ import { useRecoilValue } from "recoil";
 import { dateFormatter } from "../../utils/dateFormatter";
 
 const MissionInfo = ({ isWriting }) => {
-  const userid = "test3";
+  const navigate = useNavigate();
   const missionDetail = useRecoilValue(missionDetailState);
   const [missionValues, setMissionValues] = useState(
     isWriting ? {} : missionDetail
   );
-  const handleChange = (e) => {
-    setMissionValues({
-      ...missionValues,
-      [e.target.name]: e.target.value,
-    });
-    console.log(missionValues);
-  };
+
   useEffect(() => {
     if (!isWriting) {
       const [date, time] = dateFormatter(missionValues.endDate).split(" ");
@@ -31,8 +26,18 @@ const MissionInfo = ({ isWriting }) => {
       });
     }
   }, []);
+
+  const handleChange = (e) => {
+    setMissionValues({
+      ...missionValues,
+      [e.target.name]: e.target.value,
+    });
+    console.log(missionValues);
+  };
+
   const handleSubmit = (e) => {
     const { title, reward, recruitCount, content, date, time } = missionValues;
+    const userid = JSON.parse(sessionStorage.getItem("signData"))["userId"];
     if (!checkUndefine(title, reward, recruitCount, content, date, time)) {
       const reqBody = {
         userId: userid,
@@ -43,9 +48,10 @@ const MissionInfo = ({ isWriting }) => {
         endDate: mergeDateTime(missionValues.date, missionValues.time),
       };
       console.log(reqBody);
-      axios
-        .post(`${apiUrl}newmission`, reqBody)
-        .then((res) => console.log(res));
+      axios.post(`${apiUrl}newmission`, reqBody).then((res) => {
+        console.log(res);
+        navigate("/");
+      });
     } else {
       console.log("missing arg");
     }
