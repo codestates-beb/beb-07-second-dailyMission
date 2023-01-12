@@ -45,6 +45,7 @@ Click =>> <a href="https://crystalline-jodhpur-c0e.notion.site/Project-2-838f989
 
 <img src="https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white">
 <img src="https://img.shields.io/badge/express-000000?style=for-the-badge&logo=express&logoColor=white">
+<img src="https://img.shields.io/badge/amazon aws-232F3E?style=for-the-badge&logo=amazon aws&logoColor=white">
 </br></br>
 
 <img src="https://img.shields.io/badge/prisma-2D3748?style=for-the-badge&logo=Prisma&logoColor=white">
