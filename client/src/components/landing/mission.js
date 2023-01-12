@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import apiUrl from "../../utils/api";
-import "./mission.css";
-import { dateFormatter } from "../../utils/dateFormatter";
-import { useRecoilState } from "recoil";
-import { missionDetailState } from "../../status/mission";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import apiUrl from '../../utils/api';
+import './mission.css';
+import { dateFormatter } from '../../utils/dateFormatter';
+import { useRecoilState } from 'recoil';
+import { missionDetailState } from '../../status/mission';
 
 const Mission = (props) => {
   const mission = props.message;
@@ -13,7 +13,7 @@ const Mission = (props) => {
     data: { message: { comments: [] } },
   });
   useEffect(() => {
-    axios.get(`${apiUrl}/missiondetail?missionid=${mission.id}`).then((e) => {
+    axios.get(`${apiUrl}missiondetail?missionid=${mission.id}`).then((e) => {
       setMissionData(e);
     });
   }, []);
