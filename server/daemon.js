@@ -1,7 +1,7 @@
 const cron = require('node-cron');
 const Web3 = require('web3');
 
-const web3 = new Web3('http://localhost:7545');
+const web3 = new Web3('http://172.31.44.167:7545');
 
 const getLatestBlock = async () => await web3.eth.getBlockNumber();
 const blockInfo = async (num) => console.log(await web3.eth.getBlock(num));
@@ -15,6 +15,7 @@ const changeblocknum = (num) => {
 const task = cron.schedule('* * * * * *', async () => {
   getLatestBlock().then((res) => {
     if (res != blocknum) {
+      console.log(`Block Number : ${res}`);
       blockInfo();
       txInfo();
       changeblocknum(res);
