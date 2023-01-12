@@ -40,6 +40,12 @@ module.exports = {
                 address: address,
             },
         });
-        return res.status(201).send({ status: "success" });
+        return res.status(201).send({
+            status: "success", message: {
+                userId: newUser.userId,
+                userName: newUser.userName,
+                address: newUser.address,
+            }
+        });
     },
 };

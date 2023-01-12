@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import apiUrl from "../utils/api";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import apiUrl from '../utils/api';
 
-import Mission from "../components/landing/mission";
+import Mission from '../components/landing/mission';
 
-import "./Landing.css";
-import { Link } from "react-router-dom";
+import './Landing.css';
+import { Link } from 'react-router-dom';
 
-import { useRecoilState } from "recoil";
-import { status } from "../status/store";
+import { useRecoilState } from 'recoil';
+import { status } from '../status/store';
 
-import isSigned from "../status/isSigned";
+import isSigned from '../status/isSigned';
 import {
   UNSAFE_enhanceManualRouteObjects,
   useNavigate,
-} from "react-router-dom";
+} from 'react-router-dom';
 
 const Landing = () => {
   const [signStatus, setSignStatus] = useRecoilState(status);
@@ -23,7 +23,7 @@ const Landing = () => {
   const navigate = useNavigate();
   const getMissions = () => {
     axios.get(`${apiUrl}/missions`).then((e) => {
-      e.data.status === "success"
+      e.data.status === 'success'
         ? setMissions(e.data.message)
         : setMissions([]);
     });
@@ -39,8 +39,8 @@ const Landing = () => {
   };
 
   const newMissionClickHandler = () => {
-    if (signStatus.isSigned) navigate("/newmission");
-    else alert("You have to sign up to create a new mission!");
+    if (signStatus.isSigned) navigate('/newmission');
+    else alert('You have to sign in to create a new mission!');
   };
   useEffect(() => {
     getMissions();

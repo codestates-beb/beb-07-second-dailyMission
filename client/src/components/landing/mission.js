@@ -16,7 +16,7 @@ const Mission = (props) => {
     axios.get(`${apiUrl}/missiondetail?missionid=${mission.id}`).then((e) => {
       setMissionData(e);
     });
-  });
+  }, []);
   const navigate = useNavigate();
   const comments = missionData.data.message.comments;
   const selectedComments = comments.reduce((sum, now) => {
@@ -24,7 +24,7 @@ const Mission = (props) => {
   }, 0);
 
   const handleMissionClick = (e) => {
-    navigate(`missiondetail?missionid=${mission.id}`);
+    navigate(`/missiondetail?missionid=${mission.id}`);
     console.log(mission.id);
     setMissionDetail(missionData.data.message);
   };

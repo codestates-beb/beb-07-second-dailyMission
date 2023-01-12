@@ -1,4 +1,13 @@
-.header{
+.header {
   width: 900px;
-  background-color:#f7f0e8
+  background-color: #f7f0e8
+}
+
+.drop-down {
+  list-style: none
+}
+
+.logo {
+  display: flex;
+  align-items: flex-start;
 }
