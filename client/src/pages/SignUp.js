@@ -3,6 +3,7 @@ import apiUrl from "../utils/api";
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
 import { status } from "../status/store";
+import './SignUp.css';
 
 
 const SignUp = () => {
@@ -92,7 +93,7 @@ const SignUp = () => {
     }
 
     return (
-        <>
+        <div className="signup-form">
             <h3>Welcome ^^</h3>
             <div className="form">
                 <div className="form-el">
@@ -128,9 +129,9 @@ const SignUp = () => {
                     />
                     <p className="message">{passwordConfirmMessage}</p>
                 </div>
-                <button type="submit" onClick={onClickSubmit}>Submit</button>
+                <button className="submit-btn" type="submit" onClick={onClickSubmit}>Submit</button>
             </div>
-        </>
+        </div>
     );
 };
 

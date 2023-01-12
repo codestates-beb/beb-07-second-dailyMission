@@ -1,47 +1,64 @@
-.mypage{
-  width:900px;
-  display:grid;
-  grid-template-rows:auto;
-  gap:10px;
-}
-.missionTitleContainer{
+.mypage {
+  width: 900px;
   display: grid;
-  grid-template-columns:1fr 1fr 1fr;
+  grid-template-rows: auto;
+  gap: 10px;
+  background-image: linear-gradient(to top, white 0%, rgb(247, 240, 232) 100%);
 }
-.mymissionstitle{
-  grid-column: 1/4;
-}
-.commentTitleContainer{
+
+.missionTitleContainer {
   display: grid;
-  grid-template-columns:1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
 }
-.mycommentstitle{
+
+.mymissionstitle {
   grid-column: 1/4;
 }
 
-.userInfo{
+.commentTitleContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.mycommentstitle {
+  grid-column: 1/4;
+}
+
+.userInfo {
   display: grid;
   grid-template-columns: 1fr 15fr;
 }
 
-.tokenInfo{
+.tokenInfo {
   display: grid;
   grid-template-rows: 1fr 1fr;
 }
 
-.balances{
+.balances {
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
 
-.transferToken{
+.transferToken {
   display: grid;
   grid-template-columns: 15fr 1fr 1fr;
-  gap:5px;
+  gap: 2px;
+  color: brown;
+  font-weight: 600;
+  border-radius: 5px;
+  transition: all 0.2s;
+  border-color: rgb(247, 240, 232);
+  background-color: rgb(239, 225, 216);
+  margin-right: 3px;
 }
 
-.myStuffs{
+.transferToken:hover {
+  background-color: burlywood;
+
+}
+
+.myStuffs {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap:30px;
+  gap: 30px;
 }
