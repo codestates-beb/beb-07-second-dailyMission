@@ -11,15 +11,13 @@ const Comment = ({ isSigned, comment }) => {
   const [isSelected, setIsSelected] = useState(comment.isSelected);
   const [isWriter, setIsWriter] = useState(false);
   useEffect(() => {
-    if (
-      isSigned &&
-      missionDetail.userId ===
-        JSON.parse(sessionStorage.getItem("signData"))["userId"]
-    ) {
-      setIsWriter(true);
+    if (isSigned) {
+      setIsWriter(
+        missionDetail.userId ===
+          JSON.parse(sessionStorage.getItem("signData"))["userId"]
+      );
     }
-  }, [missionDetail]);
-
+  }, [isWriter, missionDetail, isSigned]);
   const onSelectClick = (e) => {
     axios
       .post(`${apiUrl}selcomment`, {
@@ -51,10 +49,10 @@ const Comment = ({ isSigned, comment }) => {
           </CardText>
           {isSelected ? (
             <Button disabled>Selected</Button>
-          ) : isWriter ? (
-            <Button onClick={onSelectClick}>Select</Button>
           ) : (
-            ""
+            <Button onClick={onSelectClick} disabled={!isWriter}>
+              Select
+            </Button>
           )}
         </CardBody>
       </Card>
