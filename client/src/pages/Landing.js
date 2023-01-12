@@ -22,7 +22,7 @@ const Landing = () => {
   const [curPage, setPage] = useState(0);
   const navigate = useNavigate();
   const getMissions = () => {
-    axios.get(`${apiUrl}/missions`).then((e) => {
+    axios.get(`${apiUrl}missions`).then((e) => {
       e.data.status === 'success'
         ? setMissions(e.data.message)
         : setMissions([]);
