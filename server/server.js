@@ -10,16 +10,16 @@ const app = express();
 const apiRouter = require('./router/apiroot');
 
 const http = require('http').createServer(app);
-const fs = require('fs');
-const https = require('https').createServer({
-  key: fs.readFileSync(__dirname + '/private.key', 'utf-8'),
-  cert: fs.readFileSync(__dirname + '/certificate.crt', 'utf-8'),
-});
-
-https.listen(8080);
-// http.listen(8080, () => {
-//   console.log('Listening 8080');
+// const fs = require('fs');
+// const https = require('https').createServer({
+//   key: fs.readFileSync(__dirname + '/private.key', 'utf-8'),
+//   cert: fs.readFileSync(__dirname + '/certificate.crt', 'utf-8'),
 // });
+
+// https.listen(8080);
+http.listen(8080, () => {
+  console.log('Listening 8080');
+});
 
 app.use(express.static(path.join(__dirname, '../client/build')));
 
