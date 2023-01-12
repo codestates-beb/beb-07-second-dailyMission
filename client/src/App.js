@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Landing from "./pages/Landing";
 import Mypage from "./pages/MyPage";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 import SignUp from "./pages/SignUp";
 import "bootstrap/dist/css/bootstrap.css";
 import MissionDetail from "./pages/MissionDetail";
@@ -21,6 +22,7 @@ function App() {
         <Route path="signup" element={<SignUp />}></Route>
         <Route path="/mint" element={<MintPage />}></Route>
       </Routes>
+      <Footer />
     </div>
   );
 }
