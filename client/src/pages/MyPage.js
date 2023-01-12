@@ -125,7 +125,7 @@ const Mypage = () => {
               <div className="mycommentstitle">MyComments</div>
               <div>missionID</div>
               <div>Content</div>
-              <div>Complete</div>
+              <div>Selected</div>
             </div>
             <div>
               {typeof userInfo !== 'undefined'

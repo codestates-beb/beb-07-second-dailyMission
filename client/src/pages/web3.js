@@ -1,4 +1,4 @@
 export default {
-  network: 'http://127.0.0.1',
+  network: 'http://13.125.245.139',
   port: '7545',
 };

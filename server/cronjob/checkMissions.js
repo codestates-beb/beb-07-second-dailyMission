@@ -28,9 +28,9 @@ const checkMission = async () => {
   // const timeDiff = 0;
 
   const curr = new Date();
-  // const utc = curr.getTime();
-  // const kst = new Date(utc + timeDiff);
-  const kst = new Date();
+  const utc = curr.getTime();
+  const kst = new Date(utc + timeDiff);
+  // const kst = new Date();
 
   const time = [
     kst.getFullYear(),

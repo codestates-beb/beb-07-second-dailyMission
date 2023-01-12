@@ -15,7 +15,6 @@ const NewMission = () => {
       ...missionValues,
       [e.target.name]: e.target.value,
     });
-    console.log(missionValues);
   };
 
   const handleSubmit = (e) => {

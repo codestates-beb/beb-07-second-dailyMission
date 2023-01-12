@@ -3,23 +3,21 @@ import { Card, CardBody, Button, CardText } from "reactstrap";
 import { IpfsImage } from "react-ipfs-image";
 import axios from "axios";
 import apiUrl from "../../utils/api";
-import { missionDetailState } from "../../status/mission";
-import { useRecoilValue } from "recoil";
 
-const Comment = ({ isSigned, comment }) => {
-  const missionDetail = useRecoilValue(missionDetailState);
+const Comment = ({ isSigned, comment, userId }) => {
   const [isSelected, setIsSelected] = useState(comment.isSelected);
   const [isWriter, setIsWriter] = useState(false);
   useEffect(() => {
-    if (
-      isSigned &&
-      missionDetail.userId ===
-        JSON.parse(sessionStorage.getItem("signData"))["userId"]
-    ) {
-      setIsWriter(true);
+    if (isSigned) {
+      setIsWriter(() => {
+        const currUser = JSON.parse(sessionStorage.getItem("signData"))[
+          "userId"
+        ];
+        console.log(userId, currUser);
+        return userId === currUser;
+      });
     }
-  }, [missionDetail]);
-
+  }, [isWriter, userId, isSigned]);
   const onSelectClick = (e) => {
     axios
       .post(`${apiUrl}selcomment`, {
@@ -51,10 +49,10 @@ const Comment = ({ isSigned, comment }) => {
           </CardText>
           {isSelected ? (
             <Button disabled>Selected</Button>
-          ) : isWriter ? (
-            <Button onClick={onSelectClick}>Select</Button>
           ) : (
-            ""
+            <Button onClick={onSelectClick} disabled={!isWriter}>
+              Select
+            </Button>
           )}
         </CardBody>
       </Card>

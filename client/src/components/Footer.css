@@ -1,0 +1,31 @@
+.Footer {
+    width: 100%;
+    background-color: rgb(250, 243, 234);
+    border-top: thick double rgb(239, 225, 216);
+    border-bottom: thick double rgb(239, 225, 216);
+    ;
+}
+
+.footer-ul {
+    list-style: none;
+    text-align: center;
+}
+
+.footer-li {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.footer-a {
+    text-decoration-line: none;
+    color: brown;
+}
+
+.footer-text {
+    color: brown;
+    font-family: sans-serif;
+}
+
+.footer-a:hover {
+    text-decoration: underline;
+}

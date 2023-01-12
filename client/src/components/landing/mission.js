@@ -4,8 +4,6 @@ import axios from "axios";
 import apiUrl from "../../utils/api";
 import "./mission.css";
 import { dateFormatter } from "../../utils/dateFormatter";
-import { useRecoilState } from "recoil";
-import { missionDetailState } from "../../status/mission";
 
 const Mission = (props) => {
   const mission = props.message;
@@ -13,7 +11,7 @@ const Mission = (props) => {
     data: { message: { comments: [] } },
   });
   useEffect(() => {
-    axios.get(`${apiUrl}/missiondetail?missionid=${mission.id}`).then((e) => {
+    axios.get(`${apiUrl}missiondetail?missionid=${mission.id}`).then((e) => {
       setMissionData(e);
     });
   }, []);
@@ -24,11 +22,8 @@ const Mission = (props) => {
   }, 0);
 
   const handleMissionClick = (e) => {
-    navigate(`/missiondetail?missionid=${mission.id}`);
-    console.log(mission.id);
-    setMissionDetail(missionData.data.message);
+    navigate(`/missiondetail/${mission.id}`);
   };
-  const [missionDetail, setMissionDetail] = useRecoilState(missionDetailState);
 
   return (
     <div className="mission">

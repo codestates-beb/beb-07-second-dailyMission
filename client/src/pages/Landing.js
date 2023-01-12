@@ -22,7 +22,7 @@ const Landing = () => {
   const [curPage, setPage] = useState(0);
   const navigate = useNavigate();
   const getMissions = () => {
-    axios.get(`${apiUrl}/missions`).then((e) => {
+    axios.get(`${apiUrl}missions`).then((e) => {
       e.data.status === 'success'
         ? setMissions(e.data.message)
         : setMissions([]);
@@ -78,7 +78,7 @@ const Landing = () => {
         </div>
         <div className="missionsContainer" align="center">
           {missions.length !== 0 ? (
-            missionsPage.map((e) => {
+            missionsPage.slice(0).reverse().map((e) => {
               return <Mission key={missions.indexOf(e)} message={e} />;
             })
           ) : (

@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import signData from '../status/isSigned';
 import data from '../utils/data';
 import { IpfsImage } from 'react-ipfs-image';
+import './nftmint.css';
 
 const MintPage = () => {
   const [signStatus, setSignStatus] = useRecoilState(status);
@@ -50,7 +51,7 @@ const MintPage = () => {
       <div>Token Balance : {userInfo.banlance}</div>
       <div>Mint Price : {data.mint_price} token</div>
       <br></br>
-      <button onClick={clickHandler}>Mint!</button>
+      <button className='mint-btn' onClick={clickHandler}>Mint!</button>
       <div>
         {mintStatus.status === 'success' ? (
           <div>

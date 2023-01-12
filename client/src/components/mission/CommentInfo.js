@@ -1,19 +1,14 @@
 import React, { useState } from "react";
 import { Form, FormGroup, Col, Input, Button } from "reactstrap";
 import { checkUndefine } from "../../utils/utils.js";
-import { missionDetailState } from "../../status/mission";
-import { useRecoilValue } from "recoil";
 import IpfsModal from "./IpfsModal.js";
 import axios from "axios";
 import apiUrl from "../../utils/api";
 import { useNavigate } from "react-router-dom";
 
-// import { ImageUpload } from "react-ipfs-uploader";
-
-const CommentInfo = ({ isSigned }) => {
+const CommentInfo = ({ isSigned, missionDetail }) => {
   const navigate = useNavigate();
   const [commentValues, setCommentValues] = useState({});
-  const missionDetail = useRecoilValue(missionDetailState);
   const [modal, setModal] = useState(false);
 
   const handleChange = (e) => {

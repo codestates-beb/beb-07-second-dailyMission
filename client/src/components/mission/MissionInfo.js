@@ -1,48 +1,36 @@
-import axios from "axios";
-import React, { useEffect, useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
-import { Form, FormGroup, Label, Col, Input, Button, Row } from "reactstrap";
-import { mergeDateTime, checkUndefine } from "../../utils/utils.js";
-import apiUrl from "../../utils/api";
-import { missionDetailState } from "../../status/mission";
-import { useRecoilValue } from "recoil";
-import { dateFormatter } from "../../utils/dateFormatter";
+import React from "react";
+import { Form, FormGroup, Label, Col, Input, Row } from "reactstrap";
 
-const MissionInfo = ({ isSigned }) => {
-  const missionDetail = useRecoilValue(missionDetailState);
-  const [userId, setUserId] = useState("");
-  const [missionValues, setMissionValues] = useState(missionDetail);
-
-  useEffect(() => {
-    if (isSigned) {
-      setUserId(JSON.parse(sessionStorage.getItem("signData"))["userId"]);
-    }
-    const [date, time] = dateFormatter(missionValues.endDate).split(" ");
-    setMissionValues((curr) => {
-      const withDateTime = { ...curr };
-      withDateTime.date = "20" + date;
-      withDateTime.time = time;
-      return withDateTime;
-    });
-  }, []);
+const MissionInfo = ({ missionDetail }) => {
+  const { title, reward, recruitCount, content, date, time, userId } =
+    missionDetail;
 
   return (
     <div>
       <Form>
-        <FormGroup row>
-          <Label size="lg" sm={2}>
-            Title
-          </Label>
-          <Col sm={10}>
-            <Input
-              name="title"
-              bsSize="lg"
-              value={missionValues.title || ""}
-              placeholder="write a title"
-              disabled={true}
-            />
+        <Row>
+          <Col md={5}>
+            <FormGroup>
+              <Label size="lg" sm={3}>
+                Title
+              </Label>
+              <Input
+                name="title"
+                bsSize="lg"
+                value={title || ""}
+                placeholder="write a title"
+                disabled={true}
+              />
+            </FormGroup>
           </Col>
-        </FormGroup>
+          <Col md={2}>
+            <FormGroup>
+              <Label>User</Label>
+              <Input name="userId" value={userId || ""} disabled={true} />
+            </FormGroup>
+          </Col>
+        </Row>
+
         <Row>
           <Col>
             <FormGroup>
@@ -50,7 +38,7 @@ const MissionInfo = ({ isSigned }) => {
               <Input
                 name="reward"
                 type="number"
-                value={missionValues.reward || ""}
+                value={reward || ""}
                 disabled={true}
               />
             </FormGroup>
@@ -60,7 +48,7 @@ const MissionInfo = ({ isSigned }) => {
               <Label>Recruit</Label>
               <Input
                 name="recruitCount"
-                value={missionValues.recruitCount || ""}
+                value={recruitCount || ""}
                 disabled={true}
               ></Input>
             </FormGroup>
@@ -72,7 +60,7 @@ const MissionInfo = ({ isSigned }) => {
                 name="date"
                 placeholder="date placeholder"
                 type="date"
-                value={missionValues.date || ""}
+                value={date || ""}
                 disabled={true}
               />
             </FormGroup>
@@ -83,7 +71,7 @@ const MissionInfo = ({ isSigned }) => {
               <Input
                 name="time"
                 type="time"
-                value={missionValues.time || ""}
+                value={time || ""}
                 disabled={true}
               />
             </FormGroup>
@@ -94,7 +82,7 @@ const MissionInfo = ({ isSigned }) => {
             name="content"
             type="textarea"
             placeholder="Write your mission"
-            value={missionValues.content || ""}
+            value={content || ""}
             disabled={true}
           />
         </FormGroup>

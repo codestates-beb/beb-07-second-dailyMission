@@ -2,21 +2,27 @@ import React, { useEffect, useState } from "react";
 import MissionInfo from "../components/mission/MissionInfo.js";
 import CommentInfo from "../components/mission/CommentInfo.js";
 import Comment from "../components/mission/Comment";
-import { useRecoilValue } from "recoil";
-import { missionDetailState } from "../status/mission";
 import { CardGroup } from "reactstrap";
 import axios from "axios";
 import apiUrl from "../utils/api";
-
 import Mission from "../components/landing/mission";
+import isSigned from "../status/isSigned";
+import { useRecoilState } from "recoil";
+import { status } from "../status/store";
+import { useParams } from "react-router-dom";
+import { dateFormatter } from "../utils/dateFormatter.js";
+import { Form } from "reactstrap";
 
-const MissionDetail = ({ isWriting }) => {
+const MissionDetail = () => {
   // misionid -> missionDetail -> recoil로 mission state 관리 -> 자식 컴포넌츠에서 mission state 가져오기
-  const missionDetail = useRecoilValue(missionDetailState);
-  const comments = missionDetail.comments;
-  const [isSigned, setIsSigned] = useState(false);
+  const [missionDetail, setMissionDetail] = useState({});
+  const [comments, setComments] = useState([]);
+  const [signed, setSigned] = useState(false);
+  const [signStatus, setSignStatus] = useRecoilState(status);
   const [missions, setMissions] = useState([]);
   const missionsPage = missions.slice(0, 10);
+  const { missionid } = useParams();
+
   const getMissions = () => {
     axios.get(`${apiUrl}/missions`).then((e) => {
       e.data.status === "success"
@@ -24,26 +30,42 @@ const MissionDetail = ({ isWriting }) => {
         : setMissions([]);
     });
   };
-  useEffect(() => {
-    getMissions();
-    setIsSigned(() => {
-      return sessionStorage.getItem("signData") ? true : false;
-    });
-  }, [isSigned]);
 
-  const writeMission = (
-    <div>
-      <MissionInfo isSigned={isSigned} isWriting={isWriting} />
-    </div>
-  );
+  useEffect(() => {
+    const getMission = async () => {
+      const res = await axios.get(
+        `${apiUrl}missiondetail?missionid=${missionid}`
+      );
+      const mission = res.data.message;
+      setMissionDetail(() => {
+        const [date, time] = dateFormatter(mission.endDate).split(" ");
+        mission.date = "20" + date;
+        mission.time = time;
+        console.log(mission);
+        return mission;
+      });
+      setComments(mission.comments);
+    };
+
+    const userData = isSigned();
+    setSigned(userData.isSigned);
+    if (userData.isSigned) setSignStatus(() => userData);
+    getMission();
+    getMissions();
+  }, [missionid]);
+
   const showMission = (
-    <div>
-      <MissionInfo isSigned={isSigned} isWriting={isWriting} />
-      <CommentInfo isSigned={isSigned} />
+    <Form>
+      <MissionInfo missionDetail={missionDetail} />
+      <CommentInfo isSigned={signed} missionDetail={missionDetail} />
       {comments.length !== 0 ? (
         <CardGroup>
           {comments.map((comment) => (
-            <Comment isSigned={isSigned} comment={comment} />
+            <Comment
+              isSigned={signed}
+              comment={comment}
+              userId={missionDetail.userId}
+            />
           ))}
         </CardGroup>
       ) : (
@@ -58,10 +80,10 @@ const MissionDetail = ({ isWriting }) => {
           <div className="noMissions">There is no pending missions</div>
         )}
       </div>
-    </div>
+    </Form>
   );
 
-  return <div>{isWriting ? writeMission : showMission}</div>;
+  return <div>{showMission}</div>;
 };
 
 export default MissionDetail;
