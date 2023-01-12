@@ -9,6 +9,8 @@ import "bootstrap/dist/css/bootstrap.css";
 import MissionDetail from "./pages/MissionDetail";
 import NewMission from "./pages/NewMission";
 import MintPage from './pages/nftmint';
+import NotFound from "./components/error/NotFound";
+
 
 function App() {
   return (
@@ -21,6 +23,7 @@ function App() {
         <Route path="/newmission" element={<NewMission />} />
         <Route path="signup" element={<SignUp />}></Route>
         <Route path="/mint" element={<MintPage />}></Route>
+        <Route path={"/*"} element={<NotFound />} />
       </Routes>
       <Footer />
     </div>
