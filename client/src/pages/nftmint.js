@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import signData from '../status/isSigned';
 import data from '../utils/data';
 import { IpfsImage } from 'react-ipfs-image';
+import './nftmint.css';
 
 const MintPage = () => {
   const [signStatus, setSignStatus] = useRecoilState(status);
