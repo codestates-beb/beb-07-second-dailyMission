@@ -3,21 +3,21 @@ import { Card, CardBody, Button, CardText } from "reactstrap";
 import { IpfsImage } from "react-ipfs-image";
 import axios from "axios";
 import apiUrl from "../../utils/api";
-import { missionDetailState } from "../../status/mission";
-import { useRecoilValue } from "recoil";
 
-const Comment = ({ isSigned, comment }) => {
-  const missionDetail = useRecoilValue(missionDetailState);
+const Comment = ({ isSigned, comment, userId }) => {
   const [isSelected, setIsSelected] = useState(comment.isSelected);
   const [isWriter, setIsWriter] = useState(false);
   useEffect(() => {
     if (isSigned) {
-      setIsWriter(
-        missionDetail.userId ===
-          JSON.parse(sessionStorage.getItem("signData"))["userId"]
-      );
+      setIsWriter(() => {
+        const currUser = JSON.parse(sessionStorage.getItem("signData"))[
+          "userId"
+        ];
+        console.log(userId, currUser);
+        return userId === currUser;
+      });
     }
-  }, [isWriter, missionDetail, isSigned]);
+  }, [isWriter, userId, isSigned]);
   const onSelectClick = (e) => {
     axios
       .post(`${apiUrl}selcomment`, {

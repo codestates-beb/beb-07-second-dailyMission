@@ -2,25 +2,35 @@ import React from "react";
 import { Form, FormGroup, Label, Col, Input, Row } from "reactstrap";
 
 const MissionInfo = ({ missionDetail }) => {
-  const { title, reward, recruitCount, content, date, time } = missionDetail;
+  const { title, reward, recruitCount, content, date, time, userId } =
+    missionDetail;
 
   return (
     <div>
       <Form>
-        <FormGroup row>
-          <Label size="lg" sm={2}>
-            Title
-          </Label>
-          <Col sm={10}>
-            <Input
-              name="title"
-              bsSize="lg"
-              value={title || ""}
-              placeholder="write a title"
-              disabled={true}
-            />
+        <Row>
+          <Col md={5}>
+            <FormGroup>
+              <Label size="lg" sm={3}>
+                Title
+              </Label>
+              <Input
+                name="title"
+                bsSize="lg"
+                value={title || ""}
+                placeholder="write a title"
+                disabled={true}
+              />
+            </FormGroup>
           </Col>
-        </FormGroup>
+          <Col md={2}>
+            <FormGroup>
+              <Label>User</Label>
+              <Input name="userId" value={userId || ""} disabled={true} />
+            </FormGroup>
+          </Col>
+        </Row>
+
         <Row>
           <Col>
             <FormGroup>
