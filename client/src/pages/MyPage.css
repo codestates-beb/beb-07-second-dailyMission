@@ -3,6 +3,7 @@
   display:grid;
   grid-template-rows:auto;
   gap:10px;
+  background-image: linear-gradient(to top, white 0%, rgb(247, 240, 232) 100%);
 }
 .missionTitleContainer{
   display: grid;
