@@ -40,42 +40,48 @@ const Header = () => {
                     <img className='logo' src="/assets/logo.png" />{' '}
                 </Link>
                 {signStatus.isSigned === false ? (
-                    <><button onClick={openLoginModal}>sign in</button>
+                    <div className='btn-area'>
+                        <button className='sign-btn' onClick={openLoginModal}>sign in</button>
                         <LoginModal open={loginModalOpen} close={closeLoginModal}>
                             {' '}
                         </LoginModal>
-                        <Link to="/signup">
-                            <button>sign up</button>
+                        <Link className='sign-btn' to="/signup">
+                            <button className='sign-btn'>sign up</button>
                         </Link>
-                    </>
+                    </div>
                 ) : (
-                    <div>
-                        <ul onClick={() => { setView(!view) }}>
+                    <div className='ul-area'>
+                        <ul className='header-ul' onClick={() => { setView(!view) }}>
                             반가워요, {signStatus.userName}님!
-                            {view ? '⌃' : '⌄'}
+                            {view ? ' △' : ' ▽'}
                             {view &&
                                 <div>
                                     <li className='drop-down'>
-                                        <Link to="/mypage">마이페이지
+                                        <Link className='header-link' to="/mypage">마이페이지
                                         </Link>
                                     </li>
                                     <li className='drop-down'>
-                                        <Link to="/mint">NFT 만들기
+                                        <Link className='header-link' to="/mint">NFT 만들기
                                         </Link>
                                     </li>
-                                    <li className='drop-down'>
-                                        <button onClick={signOut}>로그아웃
-                                        </button></li>
 
+
+                                    <li className='drop-down'>
+                                        <button className='sign-out' onClick={signOut}>로그아웃
+                                        </button></li>
 
                                 </div>}
                         </ul>
-                        <button onClick={openFaucetModal}>faucet</button>
+
+                        <button className='faucet-btn' onClick={openFaucetModal}>faucet</button>
                         <FaucetModal open={faucetModalOpen} close={closeFaucetModal}>
                             {' '}
                         </FaucetModal>
+
                     </div>
+
                 )}
+
             </div>
         </div>
     );
