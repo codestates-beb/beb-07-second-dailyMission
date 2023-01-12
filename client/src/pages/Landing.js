@@ -78,7 +78,7 @@ const Landing = () => {
         </div>
         <div className="missionsContainer" align="center">
           {missions.length !== 0 ? (
-            missionsPage.map((e) => {
+            missionsPage.slice(0).reverse().map((e) => {
               return <Mission key={missions.indexOf(e)} message={e} />;
             })
           ) : (

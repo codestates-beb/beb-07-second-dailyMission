@@ -51,7 +51,7 @@ const MintPage = () => {
       <div>Token Balance : {userInfo.banlance}</div>
       <div>Mint Price : {data.mint_price} token</div>
       <br></br>
-      <button onClick={clickHandler}>Mint!</button>
+      <button className='mint-btn' onClick={clickHandler}>Mint!</button>
       <div>
         {mintStatus.status === 'success' ? (
           <div>
