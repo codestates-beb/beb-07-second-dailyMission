@@ -11,6 +11,7 @@ import { useRecoilState } from "recoil";
 import { status } from "../status/store";
 import { useParams } from "react-router-dom";
 import { dateFormatter } from "../utils/dateFormatter.js";
+import { Form } from "reactstrap";
 
 const MissionDetail = () => {
   // misionid -> missionDetail -> recoil로 mission state 관리 -> 자식 컴포넌츠에서 mission state 가져오기
@@ -40,6 +41,7 @@ const MissionDetail = () => {
         const [date, time] = dateFormatter(mission.endDate).split(" ");
         mission.date = "20" + date;
         mission.time = time;
+        console.log(mission);
         return mission;
       });
       setComments(mission.comments);
@@ -53,13 +55,17 @@ const MissionDetail = () => {
   }, [missionid]);
 
   const showMission = (
-    <div>
+    <Form>
       <MissionInfo missionDetail={missionDetail} />
       <CommentInfo isSigned={signed} missionDetail={missionDetail} />
       {comments.length !== 0 ? (
         <CardGroup>
           {comments.map((comment) => (
-            <Comment isSigned={signed} comment={comment} />
+            <Comment
+              isSigned={signed}
+              comment={comment}
+              userId={missionDetail.userId}
+            />
           ))}
         </CardGroup>
       ) : (
@@ -74,7 +80,7 @@ const MissionDetail = () => {
           <div className="noMissions">There is no pending missions</div>
         )}
       </div>
-    </div>
+    </Form>
   );
 
   return <div>{showMission}</div>;
